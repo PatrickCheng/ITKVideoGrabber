@@ -1,0 +1,18 @@
+
+How to build:
+
+  1. Download ITK with video support:
+  git clone git://github.com/itkvideo/ITK.git
+  
+  2. Download and build OpenCV 2.3
+  http://opencv.willowgarage.com/wiki/
+  
+  3. Build ITK with the following group modules
+  ITKGroup_VideoCommon
+  ITKGroup_OpenCV
+
+  4. Check out ITKVideoGrabber into "ITK/Modules/External" directory
+  git clone git://github.com/PatrickCheng/ITKVideoGrabber.git
+
+  5. Run CMake on ITK and enable "Module_ITKVideoGrabber" and compile
+
