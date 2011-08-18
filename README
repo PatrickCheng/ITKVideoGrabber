@@ -14,7 +14,7 @@ How to build:
   find_package(OpenCV REQUIRED)
 
   include_directories(${OpenCV_INCLUDE_DIRS})
-  link_directories(${OpenCV_LIB_DIR}/3rdparty/lib/Debug)
+  link_directories(${OpenCV_LIB_DIR})
   target_link_libraries(YourLib ${OpenCV_LIBS})
   
   3. Build ITK with the following group modules
