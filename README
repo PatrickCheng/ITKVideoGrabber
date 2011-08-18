@@ -7,6 +7,16 @@ How to build:
   2. Download and build OpenCV 2.3
   http://opencv.willowgarage.com/wiki/
   
+  Under windows, there is some issue with linking to OpenCV libraries, use the following work around:
+  After building OpenCV 2.3, copy all .dll and .lib into "build/lib" including those in "build/3rdparty/lib"
+  In your CMakeLists.txt, call
+  
+  find_package(OpenCV REQUIRED)
+
+  include_directories(${OpenCV_INCLUDE_DIRS})
+  link_directories(${OpenCV_LIB_DIR}/3rdparty/lib/Debug)
+  target_link_libraries(YourLib ${OpenCV_LIBS})
+  
   3. Build ITK with the following group modules
   ITKGroup_VideoCommon
   ITKGroup_OpenCV
