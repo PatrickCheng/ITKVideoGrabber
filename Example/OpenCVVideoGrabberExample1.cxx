@@ -19,7 +19,8 @@
 
 //#include <imgproc.hpp>
 //#include <highgui.hpp>
-#include <cv.h>
+//#include <highgui.hpp>
+//#include <cv.h>
 #include <highgui.h>
 
 
@@ -29,26 +30,27 @@
 
 int main ( int argc, char **argv )
 {
-	int c;
-	// allocate memory for an image
-	IplImage *img;
-	// capture from video device #1
-	CvCapture* capture = cvCaptureFromCAM(0);
-	// create a window to display the images
-	cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
-	// position the window
-	cvMoveWindow("mainWin", 5, 5);
-	while(1)
-	{
-		// retrieve the captured frame
-		img=cvQueryFrame(capture);
-		// show the image in the window
-		cvShowImage("mainWin", img );
-		// wait 10 ms for a key to be pressed
-		c=cvWaitKey(10);
-		// escape key terminates program
-		if(c == 27)
-		break;
-	}
+    int c;
+    // allocate memory for an image
+    IplImage *img;
+    // capture from video device #1
+    CvCapture* capture = cvCaptureFromCAM(0);
+    // create a window to display the images
+    cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
+    // position the window
+    cvMoveWindow("mainWin", 5, 5);
+    while(1)
+    {
+      // retrieve the captured frame
+      img=cvQueryFrame(capture);
+      // show the image in the window
+      cvShowImage("mainWin", img );
+      // wait 10 ms for a key to be pressed
+      c=cvWaitKey(10);
+      // escape key terminates program
+      if(c == 27)
+      break;
+    }
+
   return 0;
 }
