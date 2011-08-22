@@ -1,4 +1,4 @@
-set(DOCUMENTATION "Video capturing using frame grabber")
+set(DOCUMENTATION "Video capturing using frame grabber.")
 
 itk_module(Video-Grabber
  DEPENDS
@@ -12,3 +12,4 @@ itk_module(Video-Grabber
    DESCRIPTION
      "${DOCUMENTATION}"
 )
+
