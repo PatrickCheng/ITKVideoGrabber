@@ -16,10 +16,12 @@
  *
  *=========================================================================*/
 #include <iostream>
-// #include <stdafx.h>
 
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
+//#include <imgproc.hpp>
+//#include <highgui.hpp>
+#include <cv.h>
+#include <highgui.h>
+
 
 //#include <itkImage.h>
 //#include <itkMedianImageFilter.h>
