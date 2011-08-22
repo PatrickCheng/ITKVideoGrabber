@@ -1,4 +1,4 @@
-project(ITKVideoGrabber)
+project(VideoGrabber)
 itk_module_impl()
 
 add_subdirectory(Base)
