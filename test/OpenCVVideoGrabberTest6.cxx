@@ -19,9 +19,6 @@
 
 #include <highgui.h>
 
-namespace
-{
-
 int OpenCVVideoGrabberTest6( int argc, char *argv[] )
 {
     int c;
@@ -43,4 +40,3 @@ int OpenCVVideoGrabberTest6( int argc, char *argv[] )
     return 0;
 }
 
-} // namespace

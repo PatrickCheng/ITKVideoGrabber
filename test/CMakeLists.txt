@@ -1,6 +1,7 @@
+
 itk_module_test()
 
-set(ITK-VideoGrabberTests
+set(ITKVideoGrabberTests
 OpenCVVideoGrabberTest1.cxx
 OpenCVVideoGrabberTest2.cxx
 OpenCVVideoGrabberTest3.cxx
@@ -9,19 +10,20 @@ OpenCVVideoGrabberTest5.cxx
 OpenCVVideoGrabberTest6.cxx
 )
 
+
 set(ITK_TEST_DRIVER itkTestDriver)
 
-CreateTestDriver(ITK-VideoGrabber "${ITK-VideoGrabber-Test_LIBRARIES}" "${ITK-VideoGrabberTests}")
+CreateTestDriver(ITKVideoGrabber "${ITKVideoGrabber-Test_LIBRARIES}" "${ITKVideoGrabberTests}")
 
 itk_add_test( NAME OpenCVVideoGrabberTest1
-  COMMAND ITK-VideoGrabberTestDriver OpenCVVideoGrabberTest1 )
+  COMMAND ITKVideoGrabberTestDriver OpenCVVideoGrabberTest1 )
 itk_add_test( NAME OpenCVVideoGrabberTest2
-  COMMAND ITK-VideoGrabberTestDriver OpenCVVideoGrabberTest2 )
+  COMMAND ITKVideoGrabberTestDriver OpenCVVideoGrabberTest2 )
 itk_add_test( NAME OpenCVVideoGrabberTest3
-  COMMAND ITK-VideoGrabberTestDriver OpenCVVideoGrabberTest3 )
+  COMMAND ITKVideoGrabberTestDriver OpenCVVideoGrabberTest3 )
 itk_add_test( NAME OpenCVVideoGrabberTest4
-  COMMAND ITK-VideoGrabberTestDriver OpenCVVideoGrabberTest4 )
+  COMMAND ITKVideoGrabberTestDriver OpenCVVideoGrabberTest4 )
 itk_add_test( NAME OpenCVVideoGrabberTest5
-  COMMAND ITK-VideoGrabberTestDriver OpenCVVideoGrabberTest5 )
+  COMMAND ITKVideoGrabberTestDriver OpenCVVideoGrabberTest5 )
 itk_add_test( NAME itkVideoGrabberTest6
-  COMMAND ITK-VideoGrabberTestDriver OpenCVVideoGrabberTest6 )
+  COMMAND ITKVideoGrabberTestDriver OpenCVVideoGrabberTest6 )
