@@ -2,16 +2,15 @@
 itk_module_test()
 
 set(ITKVideoGrabberTests
-OpenCVVideoGrabberTest1.cxx
-OpenCVVideoGrabberTest2.cxx
-OpenCVVideoGrabberTest3.cxx
-OpenCVVideoGrabberTest4.cxx
-OpenCVVideoGrabberTest5.cxx
-OpenCVVideoGrabberTest6.cxx
+    OpenCVVideoGrabberTest1.cxx
+    OpenCVVideoGrabberTest2.cxx
+    OpenCVVideoGrabberTest3.cxx
+    OpenCVVideoGrabberTest4.cxx
+    OpenCVVideoGrabberTest5.cxx
+    OpenCVVideoGrabberTest6.cxx
 )
 
-
-set(ITK_TEST_DRIVER itkTestDriver)
+set(ITKVideoGrabber-Test_LIBRARIES ${ITKVideoGrabber_LIBRARIES} ${OpenCV_LIBS})
 
 CreateTestDriver(ITKVideoGrabber "${ITKVideoGrabber-Test_LIBRARIES}" "${ITKVideoGrabberTests}")
 

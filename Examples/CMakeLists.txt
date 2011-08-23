@@ -1,5 +1,5 @@
 
-find_package ( OpenCV REQUIRED )
+#find_package ( OpenCV REQUIRED )
 
 # OpenCVVideoGrabberExample1
 
