@@ -4,6 +4,8 @@ itk_module(Video-Grabber
  DEPENDS
    ITK-Common
    ITK-ImageFilterBase
+   ITK-Thresholding
+   ITK-ImageFeature
    ITK-CurvatureFlow
    Video-Core-Common
    Video-Core-OpenCV
