@@ -10,6 +10,7 @@ set(ITKVideoGrabberTests
     OpenCVVideoGrabberTest6.cxx
 )
 
+find_package ( OpenCV REQUIRED )
 set(ITKVideoGrabber-Test_LIBRARIES ${ITKVideoGrabber_LIBRARIES} ${OpenCV_LIBS})
 
 CreateTestDriver(ITKVideoGrabber "${ITKVideoGrabber-Test_LIBRARIES}" "${ITKVideoGrabberTests}")
