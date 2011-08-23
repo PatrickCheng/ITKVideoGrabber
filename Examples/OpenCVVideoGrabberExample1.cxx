@@ -17,20 +17,10 @@
  *=========================================================================*/
 #include <iostream>
 
-//#include <imgproc.hpp>
-//#include <highgui.hpp>
-//#include <highgui.hpp>
-//#include <cv.h>
 #include <highgui.h>
-
-
-//#include <itkImage.h>
-//#include <itkMedianImageFilter.h>
-#include <itkOpenCVImageBridge.h>
 
 int main ( int argc, char **argv )
 {
-    int c;
     // allocate memory for an image
     IplImage *img;
     // capture from video device #1
@@ -39,6 +29,8 @@ int main ( int argc, char **argv )
     cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
     // position the window
     cvMoveWindow("mainWin", 5, 5);
+    int c = 0;
+
     while(1)
     {
       // retrieve the captured frame
@@ -49,7 +41,7 @@ int main ( int argc, char **argv )
       c=cvWaitKey(10);
       // escape key terminates program
       if(c == 27)
-      break;
+         break;
     }
 
   return 0;
