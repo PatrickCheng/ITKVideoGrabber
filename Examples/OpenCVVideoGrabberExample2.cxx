@@ -17,15 +17,9 @@
  *=========================================================================*/
 #include <iostream>
 
-//#include <imgproc.hpp>
-//#include <highgui.hpp>
-//#include <cv.h>
 #include <highgui.h>
+#include <stdio.h>
 
-
-//#include <itkImage.h>
-//#include <itkMedianImageFilter.h>
-#include <itkOpenCVImageBridge.h>
 
 int main ( int argc, char **argv )
 {
