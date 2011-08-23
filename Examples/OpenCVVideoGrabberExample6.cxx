@@ -20,6 +20,7 @@
 #include <itkVideoStream.h>
 #include <itkCurvatureFlowImageFilter.h>
 #include <itkCastImageFilter.h>
+#include <itkThresholdImageFilter.h>
 #include <itkImageFilterToVideoFilterWrapper.h>
 #include <itkFrameDifferenceVideoFilter.h>
 #include <itkVideoFileReader.h>
@@ -52,6 +53,10 @@ int main ( int argc, char **argv )
                                                  ImageFilterType;
   typedef itk::ImageFilterToVideoFilterWrapper< ImageFilterType >
                                                  VideoFilterType;
+  typedef itk::ThresholdImageFilter< IOFrameType >
+                                                 ThresholdImageFilterType;
+  typedef itk::ImageFilterToVideoFilterWrapper< ThresholdImageFilterType >
+                                                 ThresholdVideoFilterType;
 
   typedef itk::FrameDifferenceVideoFilter< IOVideoType, IOVideoType >
                                                  FrameDifferenceFilterType;
@@ -62,6 +67,8 @@ int main ( int argc, char **argv )
   VideoFilterType::Pointer videoFilter = VideoFilterType::New();
   CastImageFilterType::Pointer imageCaster = CastImageFilterType::New();
   CastVideoFilterType::Pointer videoCaster = CastVideoFilterType::New();
+  ThresholdImageFilterType::Pointer imageThresh = ThresholdImageFilterType::New();
+  ThresholdVideoFilterType::Pointer videoThresh = ThresholdVideoFilterType::New();
   FrameDifferenceFilterType::Pointer frameDifferenceFilter =
     FrameDifferenceFilterType::New();
 
@@ -73,6 +80,9 @@ int main ( int argc, char **argv )
 
   videoCaster->SetImageFilter( imageCaster );
 
+  imageThresh->ThresholdBelow( 128 );
+  videoThresh->SetImageFilter( imageThresh );
+
   imageFilter->SetTimeStep( 0.5 );
   imageFilter->SetNumberOfIterations( 20 );
   videoFilter->SetImageFilter( imageFilter );
@@ -80,7 +90,8 @@ int main ( int argc, char **argv )
   videoFilter->SetInput( reader->GetOutput() );
   videoCaster->SetInput( videoFilter->GetOutput() );
   frameDifferenceFilter->SetInput( videoCaster->GetOutput() );
-  writer->SetInput( frameDifferenceFilter->GetOutput() );
+  videoThresh->SetInput( frameDifferenceFilter->GetOutput() );
+  writer->SetInput( videoThresh->GetOutput() );
 
   try
     {
