@@ -29,7 +29,7 @@ int main ( int argc, char **argv )
 	
 	CvCapture* capture = cvCreateCameraCapture(0);
 	
-	usleep(500);
+	cvWaitKey(5);
 	
 	i = 0;
 	while(!capture && i < 100) {
