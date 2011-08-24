@@ -19,24 +19,76 @@
 
 #include <highgui.h>
 
+#include <itkVideoStream.h>
+#include <itkCurvatureFlowImageFilter.h>
+#include <itkCastImageFilter.h>
+#include <itkImageFilterToVideoFilterWrapper.h>
+#include <itkFrameDifferenceVideoFilter.h>
+#include <itkVideoFileReader.h>
+#include <itkVideoFileWriter.h>
+#include <itkOpenCVVideoIOFactory.h>
+
+
 int OpenCVVideoGrabberTest3( int argc, char *argv[] )
 {
-    int c;
-    // allocate memory for an image
-    IplImage *img;
-    // capture from video device #1
-    CvCapture* capture = cvCaptureFromCAM(0);
-    // create a window to display the images
-    cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
-    // position the window
-    cvMoveWindow("mainWin", 5, 5);
-    // retrieve the captured frame
-    img=cvQueryFrame(capture);
-    // show the image in the window
-    cvShowImage("mainWin", img );
-    // wait 10 ms for a key to be pressed
-    c=cvWaitKey(10);
+  const unsigned int Dimension = 2;
+  typedef unsigned char IOPixelType;
+  typedef float RealPixelType;
+  typedef itk::Image< IOPixelType, Dimension >   IOFrameType;
+  typedef itk::Image< RealPixelType, Dimension > RealFrameType;
+  typedef itk::VideoStream< IOFrameType >        IOVideoType;
+  typedef itk::VideoStream< RealFrameType >      RealVideoType;
 
-    return 0;
+  typedef itk::VideoFileReader< IOVideoType >    ReaderType;
+  typedef itk::VideoFileWriter< IOVideoType >    WriterType;
+  typedef itk::CastImageFilter< RealFrameType, IOFrameType >
+                                                 CastImageFilterType;
+  typedef itk::ImageFilterToVideoFilterWrapper< CastImageFilterType >
+                                                 CastVideoFilterType;
+  typedef itk::CurvatureFlowImageFilter< IOFrameType, RealFrameType >
+                                                 ImageFilterType;
+  typedef itk::ImageFilterToVideoFilterWrapper< ImageFilterType >
+                                                 VideoFilterType;
+
+  typedef itk::FrameDifferenceVideoFilter< IOVideoType, IOVideoType >
+                                                 FrameDifferenceFilterType;
+
+  ReaderType::Pointer reader = ReaderType::New();
+  WriterType::Pointer writer = WriterType::New();
+  ImageFilterType::Pointer imageFilter = ImageFilterType::New();
+  VideoFilterType::Pointer videoFilter = VideoFilterType::New();
+  CastImageFilterType::Pointer imageCaster = CastImageFilterType::New();
+  CastVideoFilterType::Pointer videoCaster = CastVideoFilterType::New();
+  FrameDifferenceFilterType::Pointer frameDifferenceFilter =
+    FrameDifferenceFilterType::New();
+
+  itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoIOFactory::New() );
+  reader->SetFileName( argv[1] );
+  writer->SetFileName( argv[2] );
+
+  frameDifferenceFilter->SetFrameOffset(1);
+
+  videoCaster->SetImageFilter( imageCaster );
+
+  imageFilter->SetTimeStep( 0.5 );
+  imageFilter->SetNumberOfIterations( 20 );
+  videoFilter->SetImageFilter( imageFilter );
+
+  videoFilter->SetInput( reader->GetOutput() );
+  videoCaster->SetInput( videoFilter->GetOutput() );
+  frameDifferenceFilter->SetInput( videoCaster->GetOutput() );
+  writer->SetInput( frameDifferenceFilter->GetOutput() );
+
+  try
+    {
+    writer->Update();
+    }
+  catch( itk::ExceptionObject & excp )
+    {
+    std::cerr << excp << std::endl;
+    return 1;
+    }
+
+  return 0;
 }
 

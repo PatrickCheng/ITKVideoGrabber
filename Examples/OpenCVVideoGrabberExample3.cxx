@@ -20,8 +20,6 @@
 #include <highgui.h>
 #include <stdio.h>
 
-//#include <itkMacro.h>
-//#include <itkObjectFactoryBase.h>
 #include <itkVideoStream.h>
 #include <itkCurvatureFlowImageFilter.h>
 #include <itkCastImageFilter.h>
