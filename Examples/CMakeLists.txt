@@ -42,3 +42,10 @@ add_executable(OpenCVVideoGrabberExample6
   OpenCVVideoGrabberExample6.cxx)
 target_link_libraries(OpenCVVideoGrabberExample6
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
+
+# OpenCVVideoGrabberExample7
+
+add_executable(OpenCVVideoGrabberExample7
+  OpenCVVideoGrabberExample7.cxx)
+target_link_libraries(OpenCVVideoGrabberExample7
+  ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})

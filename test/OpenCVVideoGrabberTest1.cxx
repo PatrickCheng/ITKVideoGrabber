@@ -21,7 +21,6 @@
 
 int OpenCVVideoGrabberTest1( int argc, char *argv[] )
 {
-    int c;
     // allocate memory for an image
     IplImage *img;
     // capture from video device #1
@@ -31,12 +30,10 @@ int OpenCVVideoGrabberTest1( int argc, char *argv[] )
     // position the window
     cvMoveWindow("mainWin", 5, 5);
     // retrieve the captured frame
-    img=cvQueryFrame(capture);
+    img = cvQueryFrame(capture);
     // show the image in the window
     cvShowImage("mainWin", img );
-    // wait 10 ms for a key to be pressed
-    c=cvWaitKey(10);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 

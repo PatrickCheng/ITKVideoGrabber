@@ -23,12 +23,26 @@ int main ( int argc, char **argv )
 {
     // allocate memory for an image
     IplImage *img;
+
     // capture from video device #1
-    CvCapture* capture = cvCaptureFromCAM(0);
+    CvCapture* capture = cvCreateCameraCapture(0);
+
+    cvWaitKey(5);
+
+    int i = 0;
+    while (!capture && i < 100)
+    {
+        capture = cvCreateCameraCapture(0);
+        std::cout << "Try: " << i++ << std::endl;
+    }
+
+    if(!capture)
+        return EXIT_FAILURE;
+
     // create a window to display the images
     cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
     // position the window
-    cvMoveWindow("mainWin", 5, 5);
+    cvMoveWindow("mainWin", 100, 100);
     int c = 0;
 
     while(1)
