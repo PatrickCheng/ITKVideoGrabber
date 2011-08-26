@@ -21,73 +21,81 @@
 #include <highgui.h>
 #include <stdio.h>
 
-
+/*
+ * This examples performs basic video grabbing from the default device
+ * (first available camera interface)
+ */
 int main ( int argc, char **argv )
-{	
-	double sec_per_frame;
-	
-	// capture from video device #1
-	CvCapture* capture = cvCreateCameraCapture(0);
+{
+    // capture from video device #1
+    CvCapture* capture = cvCreateCameraCapture(0);
 
-	cvWaitKey(5);
-	
-	int i = 0;
-	while (!capture && i < 100)
-        {
-	    capture = cvCreateCameraCapture(0);
-	    std::cout << "Try: " << i++ << std::endl;
-	}
+    cvWaitKey(5);
 
-        if(!capture)
-          return EXIT_FAILURE;
-  	
-  	cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
- 	cvMoveWindow("mainWin", 100, 100);
-  
-  	IplImage* img_video = 0; 
+    int i = 0;
+    while (!capture && i < 100)
+    {
+        capture = cvCreateCameraCapture(0);
+        std::cout << "Try: " << i++ << std::endl;
+    }
+
+    if(!capture)
+      return EXIT_FAILURE;
+
+    std::string windowName = "Example #2: basic video grabbing with OpenCV";
+    cvNamedWindow(windowName.c_str(), CV_WINDOW_AUTOSIZE);
+    cvMoveWindow(windowName.c_str(), 100, 100);
+
+    IplImage* img_video = 0;
     // capture a frame 
-	if(!cvGrabFrame(capture))
+    if(!cvGrabFrame(capture))
+    {
+        std::cerr << "Could not grab a frame" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    cvQueryFrame(capture);  // this call is necessary to get correct capture properties
+
+    int frameH = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT);
+    int frameW = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH);
+    printf ("Frame height: %d\n",frameH);
+    printf ("Frame width: %d\n",frameW);
+
+    int fps = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_FPS);
+    cvSetCaptureProperty (capture,CV_CAP_PROP_POS_AVI_RATIO,1);
+    int numFrames = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_POS_FRAMES);
+    cvSetCaptureProperty (capture,CV_CAP_PROP_POS_AVI_RATIO,0);
+
+    printf ("Frames per second: %d\n",fps);
+    printf ("Number of frames: %d\n",numFrames);
+
+    double sec_per_frame = (1.0/fps)*1000;
+    printf ("milliseconds per frame: %f <-> %d\n", sec_per_frame,(int)sec_per_frame);
+
+    while(1)
+    {
+        cvGrabFrame(capture);                   // capture a frame
+        img_video=cvRetrieveFrame(capture);     // retrieve the captured frame
+
+        cvShowImage(windowName.c_str(), img_video );
+        int key = cvWaitKey(30);
+        //printf ("key: %d\n",key);
+
+        if (key==10)
         {
-            std::cerr << "Could not grab a frame" << std::endl;
-            return EXIT_FAILURE;
-	}
-	
-	cvQueryFrame(capture);  // this call is necessary to get correct 
-                                // capture properties
-//	int frameH    = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT);
-//	int frameW    = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH);
-	int fps       = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_FPS);
-	cvSetCaptureProperty (capture,CV_CAP_PROP_POS_AVI_RATIO,1);
-	int numFrames = (int) cvGetCaptureProperty(capture, CV_CAP_PROP_POS_FRAMES);
+          printf ("Enter pressed!");
+          break;
+        }
+        else if (key == 65470)
+        {
+          printf ("ESC pressed!");
+          break;
+        }
+    }
 
-	cvSetCaptureProperty (capture,CV_CAP_PROP_POS_AVI_RATIO,0);
-	
-	printf ("Frames per Second: %d\n",fps);
-	printf ("Numer of Frames: %d\n",numFrames);
-	
-	sec_per_frame = (1.0/fps)*1000;	
-	printf ("milliseconds per frame: %f <-> %d\n",sec_per_frame,(int)sec_per_frame);
-	
-	while(1)
-	{
-            printf ("Iter X\n");
-            cvGrabFrame(capture);                   // capture a frame
-            img_video=cvRetrieveFrame(capture);     // retrieve the captured frame
+    cvReleaseCapture(&capture);
 
-            cvShowImage("mainWin_video", img_video );
-            int key = cvWaitKey(30);
-            printf ("key: %d\n",key);
+    cvDestroyWindow(windowName.c_str());
 
-            if (key==10) {
-                    printf ("Enter pressed!");
-                    break;
-            } else if (key == 65470) {
-                    printf ("ESC pressed!");
-                    break;
-            }
-	}	
-  	
-  	cvReleaseCapture(&capture);
-
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }

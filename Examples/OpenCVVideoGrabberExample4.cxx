@@ -26,7 +26,9 @@
 #include <itkRescaleIntensityImageFilter.h>
 #include <itkOpenCVImageBridge.h>
 
-// Process a single frame of video and return the resulting frame
+/*
+ * Process a single frame of video and return the resulting frame
+ */
 cv::Mat processFrame( const cv::Mat& inputImage )
 {
   typedef   unsigned char                          InputPixelType;
@@ -63,7 +65,7 @@ cv::Mat processFrame( const cv::Mat& inputImage )
     }
   catch( itk::ExceptionObject & excp )
     {
-    std::cerr << excp << std::endl;
+    std::cerr << excp.GetDescription() << std::endl;
     }
 
   cv::Mat frameOut = 
@@ -74,14 +76,16 @@ cv::Mat processFrame( const cv::Mat& inputImage )
   return frameOut;
 }
 
-// Iterate through a video, process each frame, and display the result in a GUI.
+/*
+ * Iterate through a video, process each frame, and display the result in a GUI.
+ */
 void processAndDisplayVideo(cv::VideoCapture& vidCap)
 {
   double frameRate = vidCap.get( CV_CAP_PROP_FPS );
   int width = vidCap.get( CV_CAP_PROP_FRAME_WIDTH );
   int height = vidCap.get( CV_CAP_PROP_FRAME_HEIGHT );
 
-  std::string windowName = "Exercise 2: Basic Video Filtering in OpenCV";
+  std::string windowName = "Example #4: Basic Video Filtering in OpenCV";
   cv::namedWindow( windowName, CV_WINDOW_FREERATIO);
   cvResizeWindow( windowName.c_str(), width, height+50 );
 
@@ -98,9 +102,14 @@ void processAndDisplayVideo(cv::VideoCapture& vidCap)
       break;
     }
   }
+
+  cvDestroyWindow( windowName.c_str() );
 }
 
-// Iterate through a video, process each frame, and save the processed video.
+
+/*
+ * Iterate through a video, process each frame, and save the processed video.
+ */
 void processAndSaveVideo(cv::VideoCapture& vidCap, const std::string& filename)
 {
   double frameRate = vidCap.get( CV_CAP_PROP_FPS );
@@ -124,15 +133,15 @@ int main ( int argc, char **argv )
 {
   if( argc < 2 )
   {
-    std::cout << "Usage: "<< argv[0] <<" input_image output_image"<<std::endl;
-    return -1;
+    std::cout << "Usage: " << argv[0] <<" input_video_file output_video_file" << std::endl;
+    return EXIT_FAILURE;
   }
 
   cv::VideoCapture vidCap( argv[1] );
   if( !vidCap.isOpened() )
   {
     std::cerr << "Unable to open video file: "<< argv[1] << std::endl;
-    return -1;
+    return EXIT_FAILURE;
   }
 
   if(argc < 3)
@@ -144,5 +153,5 @@ int main ( int argc, char **argv )
     processAndSaveVideo( vidCap, argv[2] );
   }
 
-  return 0;
+  return EXIT_SUCCESS;
 }

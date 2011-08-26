@@ -27,11 +27,15 @@
 #include <itkVideoFileWriter.h>
 #include <itkOpenCVVideoIOFactory.h>
 
+/*
+ * This example loads a video file, process it with an ITK filter and
+ * saves it back to disk.
+ */
 int main ( int argc, char **argv )
 {
   if( argc < 3 )
     {
-    std::cout << "Usage: " << argv[0] << "input_image output_image" << std::endl;
+    std::cout << "Usage: " << argv[0] << "input_video_file output_video_file" << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -99,7 +103,7 @@ int main ( int argc, char **argv )
     }
   catch( itk::ExceptionObject & excp )
     {
-    std::cerr << excp << std::endl;
+    std::cerr << excp.GetDescription() << std::endl;
     return EXIT_FAILURE;
     }
 

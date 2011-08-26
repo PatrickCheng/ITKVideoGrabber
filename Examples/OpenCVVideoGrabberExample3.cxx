@@ -32,6 +32,12 @@
 
 int main ( int argc, char **argv )
 {
+  if( argc < 3 )
+  {
+  std::cout << "Usage: " << argv[0] << "input_video_file output_video_file" << std::endl;
+  return EXIT_FAILURE;
+  }
+
   const unsigned int Dimension = 2;
   typedef unsigned char IOPixelType;
   typedef float RealPixelType;
@@ -86,9 +92,9 @@ int main ( int argc, char **argv )
     }
   catch( itk::ExceptionObject & excp )
     {
-    std::cerr << excp << std::endl;
-    return 1;
+    std::cerr << excp.GetDescription() << std::endl;
+    return EXIT_FAILURE;
     }
 
-  return 0;
+  return EXIT_SUCCESS;
 }

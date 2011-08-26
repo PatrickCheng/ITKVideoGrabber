@@ -19,6 +19,10 @@
 
 #include <highgui.h>
 
+/*
+ * This examples performs basic video grabbing from the default device
+ * (first available camera interface)
+ */
 int main ( int argc, char **argv )
 {
     // allocate memory for an image
@@ -40,9 +44,10 @@ int main ( int argc, char **argv )
         return EXIT_FAILURE;
 
     // create a window to display the images
-    cvNamedWindow("mainWin", CV_WINDOW_AUTOSIZE);
+    std::string windowName = "Example #1: basic video grabbing with OpenCV";
+    cvNamedWindow(windowName.c_str(), CV_WINDOW_AUTOSIZE);
     // position the window
-    cvMoveWindow("mainWin", 100, 100);
+    cvMoveWindow(windowName.c_str(), 100, 100);
     int c = 0;
 
     while(1)
@@ -50,7 +55,7 @@ int main ( int argc, char **argv )
       // retrieve the captured frame
       img=cvQueryFrame(capture);
       // show the image in the window
-      cvShowImage("mainWin", img );
+      cvShowImage(windowName.c_str(), img );
       // wait 10 ms for a key to be pressed
       c=cvWaitKey(10);
       // escape key terminates program
@@ -58,5 +63,7 @@ int main ( int argc, char **argv )
          break;
     }
 
-  return 0;
+  cvDestroyWindow(windowName.c_str());
+
+  return EXIT_SUCCESS;
 }

@@ -32,7 +32,7 @@
 #include <itkOpenCVVideoIOFactory.h>
 
 int main ( int argc, char **argv )
-{
+{/*
     double sec_per_frame;
 
     // capture from video device #1
@@ -100,6 +100,6 @@ int main ( int argc, char **argv )
     cvReleaseCapture(&capture);
 
     cvWaitKey(5);
-
+*/
     return EXIT_SUCCESS;
 }
