@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    itkVideoIOFactory.h
+  Module:    itkVideoGrabberInterfaceFactory.h
   Language:  C++
   Date:      $Date$
   Version:   $Revision$
@@ -14,30 +14,30 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __itkVideoGrabberFactory_h
-#define __itkVideoGrabberFactory_h
+#ifndef __itkVideoGrabberInterfaceFactory_h
+#define __itkVideoGrabberInterfaceFactory_h
 
 #include "itkObject.h"
-#include "itkVideoGrabberBase.h"
+#include "itkVideoGrabberInterfaceBase.h"
 
 
 namespace itk
 {
 
-/** \class VideoGrabberFactory
- * \brief Create instances of VideoGrabber objects using an object factory.
+/** \class VideoGrabberInterfaceFactory
+ * \brief Create instances of VideoGrabberInterface objects using an object factory.
  *
- * This class will create a VideoGrabber instance that can read/write to/from the
- * desired file or camera. In order for a specific VideoGrabber type to be
+ * This class will create a VideoGrabberInterface instance that can acquire video from the
+ * desired camera. In order for a specific VideoGrabberInterface type to be
  * considered, it must be registered with the ITK ObjectFactoryBase.
  *
  * \ingroup Video-IO-Base
  */
-class ITK_EXPORT VideoGrabberFactory:public Object
+class ITK_EXPORT VideoGrabberInterfaceFactory:public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef VideoGrabberFactory             Self;
+  typedef VideoGrabberInterfaceFactory        Self;
   typedef Object                     Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -46,23 +46,24 @@ public:
   typedef enum { ReadFileMode, ReadCameraMode, WriteMode } IOModeType;
 
   /** Runtime type information (and related methods). **/
-  itkTypeMacro(VideoGrabberFactory, Object);
+  itkTypeMacro(VideoGrabberInterfaceFactory, Object);
 
   /** Create the appropriate ImageIO depending on the particulars of the file.
    *  Note: arg can either be a path for reading/writing from/to a file or a
    *        a string containing an integer to use for a cameraID if reading
    *        from a camera
    */
-  static VideoGrabberBase::Pointer CreateVideoGrabber( IOModeType mode, const char* arg );
+  static VideoGrabberInterfaceBase::Pointer CreateVideoGrabber( IOModeType mode, const char* arg );
 
   /** Register Builtin factories **/
   static void RegisterBuiltInFactories();
 
 protected:
-  VideoGrabberFactory();
-  ~VideoGrabberFactory();
+  VideoGrabberInterfaceFactory();
+  ~VideoGrabberInterfaceFactory();
+
 private:
-  VideoGrabberFactory(const Self &); //purposely not implemented
+  VideoGrabberInterfaceFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
 };
 

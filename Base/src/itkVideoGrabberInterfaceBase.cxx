@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
-  Module:    itkVideoReaderBase.yxx
+  Module:    itkVideoGrabberInterfaceBase.cxx
   Language:  C++
   Date:      $Date$
   Version:   $Revision$
@@ -18,12 +18,12 @@
 #pragma warning ( disable : 4786 )
 #endif
 
-#include "itkVideoGrabberBase.h"
+#include "itkVideoGrabberInterfaceBase.h"
 
 namespace itk
 {
 
-void VideoGrabberBase::PrintSelf(std::ostream & os, Indent indent) const
+void VideoGrabberInterfaceBase::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
 }

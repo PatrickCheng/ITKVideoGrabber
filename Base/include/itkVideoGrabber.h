@@ -20,7 +20,7 @@
 #define __itkVideoGrabber_h
 
 #include "itkVideoSource.h"
-#include "itkVideoGrabberFactory.h"
+#include "itkVideoGrabberInterfaceFactory.h"
 #include "itkDefaultConvertPixelTraits.h"
 
 namespace itk
@@ -33,7 +33,7 @@ namespace itk
  * subclass of VideoSource, giving it functionality to connect to other
  * TemporalProcessObject classes (specifically, VideoToVideoFilter classes). It
  * uses the temporal streaming implementation provided by TemporalProcessObject
- * to load a single frame at a time into the frame buffer of the output
+ * to acquire a single frame at a time into the frame buffer of the output
  * VideoSource.
  *
  * \ingroup Video-Grabber
@@ -44,7 +44,7 @@ class ITK_EXPORT VideoGrabber:public VideoSource< TOutputVideoStream >
 public:
 
   /**-TYPEDEFS---------------------------------------------------------------*/
-  typedef VideoGrabber                   Self;
+  typedef VideoGrabber                      Self;
   typedef VideoSource< TOutputVideoStream > Superclass;
   typedef SmartPointer<Self>                Pointer;
   typedef TOutputVideoStream                VideoStreamType;
@@ -115,9 +115,8 @@ protected:
   /** The device ID to open */
   int m_DeviceNumber;
 
-  /** VideoGrabberBase used to retrieve images. This may be changed if more
-   * hierarchy is added to support general ImageSet sources */
-  VideoGrabberBase::Pointer m_VideoGrabber;
+  /** VideoGrabberInterfaceBase used to acquire video */
+  VideoGrabberInterfaceBase::Pointer m_VideoGrabber;
 
   /** Flag to store whether or not the pixel type needs to be converted */
   bool m_PixelConversionNeeded;
