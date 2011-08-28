@@ -1,6 +1,6 @@
 set(Video-Grabber-Epiphan_SRC
-itkEpiphanVideoGrabber.cxx
-itkEpiphanVideoGrabberFactory.cxx
+itkEpiphanVideoGrabberInterface.cxx
+itkEpiphanVideoGrabberInterfaceFactory.cxx
 )
 
 add_library(Video-Grabber-Epiphan ${Video-Grabber-Epiphan_SRC})

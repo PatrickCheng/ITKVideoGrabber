@@ -15,7 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkFileListVideoIO.h"
+#include "itkEpiphanVideoGrabberInterface.h"
 
 #include "itkImage.h"
 #include "itkImportImageFilter.h"
@@ -32,7 +32,7 @@ namespace itk
 //
 // Constructor
 //
-FileListVideoIO::FileListVideoIO()
+EpiphanVideoGrabberInterface::EpiphanVideoGrabberInterface()
 {
   this->ResetMembers();
 }
@@ -41,7 +41,7 @@ FileListVideoIO::FileListVideoIO()
 //
 // Destructor
 //
-FileListVideoIO::~FileListVideoIO()
+EpiphanVideoGrabberInterface::~EpiphanVideoGrabberInterface()
 {
   this->FinishReadingOrWriting();
 }
@@ -50,7 +50,7 @@ FileListVideoIO::~FileListVideoIO()
 //
 // PrintSelf
 //
-void FileListVideoIO::PrintSelf(std::ostream & os, Indent indent) const
+void EpiphanVideoGrabberInterface::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
   if (!m_ImageIO.IsNull())
@@ -60,10 +60,26 @@ void FileListVideoIO::PrintSelf(std::ostream & os, Indent indent) const
     }
 }
 
+
+bool OpenCVVideoGrabberInterface::CloseGrabber()
+{
+
+}
+
+bool OpenCVVideoGrabberInterface::StartGrabbing()
+{
+
+}
+
+bool EpiphanVideoGrabberInterface::StopGrabbing()
+{
+
+}
+
 //
 // FinishReadingOrWriting
 //
-void FileListVideoIO::FinishReadingOrWriting()
+void EpiphanVideoGrabberInterface::FinishReadingOrWriting()
 {
   this->ResetMembers();
 
@@ -78,7 +94,7 @@ void FileListVideoIO::FinishReadingOrWriting()
 //
 // GetPositionInMSec
 //
-double FileListVideoIO::GetPositionInMSec()
+double EpiphanVideoGrabberInterface::GetPositionInMSec()
 {
   return m_PositionInMSec;
 }
@@ -86,7 +102,7 @@ double FileListVideoIO::GetPositionInMSec()
 //
 // GetRatio
 //
-double FileListVideoIO::GetRatio()
+double EpiphanVideoGrabberInterface::GetRatio()
 {
   return m_Ratio;
 }
@@ -94,7 +110,7 @@ double FileListVideoIO::GetRatio()
 //
 // GetFrameTotal
 //
-unsigned long FileListVideoIO::GetFrameTotal()
+unsigned long EpiphanVideoGrabberInterface::GetFrameTotal()
 {
   return m_FrameTotal;
 }
@@ -102,7 +118,7 @@ unsigned long FileListVideoIO::GetFrameTotal()
 //
 // GetFpS
 //
-double FileListVideoIO::GetFpS()
+double EpiphanVideoGrabberInterface::GetFpS()
 {
   return m_FpS;
 }
@@ -110,7 +126,7 @@ double FileListVideoIO::GetFpS()
 //
 // GetCurrentFrame
 //
-unsigned long FileListVideoIO::GetCurrentFrame()
+unsigned long EpiphanVideoGrabberInterface::GetCurrentFrame()
 {
   return m_CurrentFrame;
 }
@@ -118,7 +134,7 @@ unsigned long FileListVideoIO::GetCurrentFrame()
 //
 // GetIFrameInterval
 //
-unsigned int FileListVideoIO::GetIFrameInterval()
+unsigned int EpiphanVideoGrabberInterface::GetIFrameInterval()
 {
   return m_IFrameInterval;
 }
@@ -126,7 +142,7 @@ unsigned int FileListVideoIO::GetIFrameInterval()
 //
 // GetLastIFrame
 //
-unsigned long FileListVideoIO::GetLastIFrame()
+unsigned long EpiphanVideoGrabberInterface::GetLastIFrame()
 {
   return m_LastIFrame;
 }
@@ -135,7 +151,7 @@ unsigned long FileListVideoIO::GetLastIFrame()
 //
 // SetFileName -- Split list based on ';'
 //
-void FileListVideoIO::SetFileName(const char* fileList)
+void EpiphanVideoGrabberInterface::SetFileName(const char* fileList)
 {
   m_FileNames = SplitFileNames(fileList);
 
@@ -146,7 +162,7 @@ void FileListVideoIO::SetFileName(const char* fileList)
 //
 // SplitFileNames ','
 //
-std::vector<std::string> FileListVideoIO::SplitFileNames(const char* fileList)
+std::vector<std::string> EpiphanVideoGrabberInterface::SplitFileNames(const char* fileList)
 {
   std::string str = fileList;
 
@@ -184,7 +200,7 @@ std::vector<std::string> FileListVideoIO::SplitFileNames(const char* fileList)
 //
 // SetReadFromFile
 //
-void FileListVideoIO::SetReadFromFile()
+void EpiphanVideoGrabberInterface::SetReadFromFile()
 {
   if (!m_ReaderOpen && !m_WriterOpen)
     {
@@ -199,7 +215,7 @@ void FileListVideoIO::SetReadFromFile()
 //
 // SetReadFromCamera
 //
-void FileListVideoIO::SetReadFromCamera()
+void EpiphanVideoGrabberInterface::SetReadFromCamera()
 {
   itkExceptionMacro("Read From Camera is not supported by this VideoIO");
 }
@@ -207,7 +223,7 @@ void FileListVideoIO::SetReadFromCamera()
 //
 // CanReadFile
 //
-bool FileListVideoIO::CanReadFile(const char* filename)
+bool EpiphanVideoGrabberInterface::CanReadFile(const char* filename)
 {
   // Make sure file names have been specified
   std::vector<std::string> fileList = SplitFileNames(filename);
@@ -248,7 +264,7 @@ bool FileListVideoIO::CanReadFile(const char* filename)
 //
 // CanReadCamera
 //
-bool FileListVideoIO::CanReadCamera( unsigned long cameraID )
+bool EpiphanVideoGrabberInterface::CanReadGrabber( unsigned long cameraID )
 {
   return false;
 }
@@ -257,7 +273,7 @@ bool FileListVideoIO::CanReadCamera( unsigned long cameraID )
 //
 // ReadImageInformation
 //
-void FileListVideoIO::ReadImageInformation()
+void EpiphanVideoGrabberInterface::ReadImageInformation()
 {
   // Open from a file
   if (m_ReadType == ReadFromFile)
@@ -307,7 +323,7 @@ void FileListVideoIO::ReadImageInformation()
   // Open capture from a camera
   else if (m_ReadType == ReadFromCamera)
     {
-    itkExceptionMacro("FileListVideoIO cannot read from a camera");
+    itkExceptionMacro("EpiphanVideoGrabber cannot read from a camera");
     }
 
   // Should never get here
@@ -320,7 +336,7 @@ void FileListVideoIO::ReadImageInformation()
 //
 // Read
 //
-void FileListVideoIO::Read(void *buffer)
+void EpiphanVideoGrabberInterface::Read(void *buffer)
 {
   // Make sure we've already called ReadImageInformation (dimensions are non-zero)
   if (m_Dimensions[0] == 0)
@@ -349,7 +365,7 @@ void FileListVideoIO::Read(void *buffer)
 //
 // SetNextFrameToRead
 //
-bool FileListVideoIO::SetNextFrameToRead(unsigned long frameNumber)
+bool EpiphanVideoGrabberInterface::SetNextFrameToRead(unsigned long frameNumber)
 {
 
   if (frameNumber >= m_FrameTotal)
@@ -365,7 +381,7 @@ bool FileListVideoIO::SetNextFrameToRead(unsigned long frameNumber)
 //
 // GetSpacing
 //
-double FileListVideoIO::GetSpacing(unsigned int i) const
+double EpiphanVideoGrabberInterface::GetSpacing(unsigned int i) const
 {
   if (!m_ReaderOpen)
     {
@@ -378,7 +394,7 @@ double FileListVideoIO::GetSpacing(unsigned int i) const
 //
 // GetOrigin
 //
-double FileListVideoIO::GetOrigin(unsigned int i) const
+double EpiphanVideoGrabberInterface::GetOrigin(unsigned int i) const
 {
   if (!m_ReaderOpen)
     {
@@ -391,7 +407,7 @@ double FileListVideoIO::GetOrigin(unsigned int i) const
 //
 // GetDirection
 //
-std::vector< double > FileListVideoIO::GetDirection(unsigned int i) const
+std::vector< double > EpiphanVideoGrabberInterface::GetDirection(unsigned int i) const
 {
   if (!m_ReaderOpen)
     {
@@ -409,7 +425,7 @@ std::vector< double > FileListVideoIO::GetDirection(unsigned int i) const
 //
 // CanWriteFile
 //
-bool FileListVideoIO::CanWriteFile(const char* filename)
+bool EpiphanVideoGrabberInterface::CanWriteFile(const char* filename)
 {
 
   // Make sure file names have been specified
@@ -451,7 +467,7 @@ bool FileListVideoIO::CanWriteFile(const char* filename)
 //
 // WriteImageInformation
 //
-void FileListVideoIO::WriteImageInformation()
+void EpiphanVideoGrabberInterface::WriteImageInformation()
 {
   if (!m_WriterOpen)
     {
@@ -464,7 +480,7 @@ void FileListVideoIO::WriteImageInformation()
 //
 // SetWriterParameters
 //
-void FileListVideoIO::SetWriterParameters(double fps, std::vector<SizeValueType> dim,
+void EpiphanVideoGrabberInterface::SetWriterParameters(double fps, std::vector<SizeValueType> dim,
                                         const char* fourCC, unsigned int nChannels,
                                         IOComponentType componentType)
 {
@@ -485,7 +501,7 @@ void FileListVideoIO::SetWriterParameters(double fps, std::vector<SizeValueType>
 //
 // Write
 //
-void FileListVideoIO::Write(const void *buffer)
+void EpiphanVideoGrabberInterface::Write(const void *buffer)
 {
 
   // Make sure parameters are specified
@@ -529,7 +545,7 @@ void FileListVideoIO::Write(const void *buffer)
 //
 // OpenReader
 //
-void FileListVideoIO::OpenReader()
+void EpiphanVideoGrabberInterface::OpenReader()
 {
   if (m_ReaderOpen)
     {
@@ -564,14 +580,14 @@ void FileListVideoIO::OpenReader()
     }
   else if (m_ReadType == ReadFromCamera)
     {
-    itkExceptionMacro("FileListVideoIO doesn't support reading from camera");
+    itkExceptionMacro("EpiphanVideoGrabber doesn't support reading from camera");
     }
 }
 
 //
 // OpenWriter
 //
-void FileListVideoIO::OpenWriter()
+void EpiphanVideoGrabberInterface::OpenWriter()
 {
   if (m_WriterOpen)
     {
@@ -605,7 +621,7 @@ void FileListVideoIO::OpenWriter()
 //
 // ResetMembers
 //
-void FileListVideoIO::ResetMembers()
+void EpiphanVideoGrabberInterface::ResetMembers()
 {
   m_ImageIO = NULL;
   m_FileNames.clear();

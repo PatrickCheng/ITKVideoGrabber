@@ -15,24 +15,24 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkEpiphanVideoGrabberFactory_h
-#define __itkEpiphanVideoGrabberFactory_h
+#ifndef __itkEpiphanVideoGrabberInterfaceFactory_h
+#define __itkEpiphanVideoGrabberInterfaceFactory_h
 
 #include "itkObjectFactoryBase.h"
 #include "itkVideoIOBase.h"
 
 namespace itk
 {
-/** \class EpiphanVideoGrabberFactory
- * \brief Create instances of EpiphanVideoGrabber objects using an object factory.
+/** \class EpiphanVideoGrabberInterfaceFactory
+ * \brief Create instances of EpiphanVideoGrabberInterface objects using an object factory.
  *
  * \ingroup Video-Grabber-Epiphan
  */
-class ITK_EXPORT EpiphanVideoGrabberFactory:public ObjectFactoryBase
+class ITK_EXPORT EpiphanVideoGrabberInterfaceFactory: public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
-  typedef EpiphanVideoGrabberFactory     Self;
+  typedef EpiphanVideoGrabberInterfaceFactory     Self;
   typedef ObjectFactoryBase          Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -46,21 +46,21 @@ public:
   itkFactorylessNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(EpiphanVideoGrabberFactory, ObjectFactoryBase);
+  itkTypeMacro(EpiphanVideoGrabberInterfaceFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
   static void RegisterOneFactory(void)
   {
-    EpiphanVideoGrabberFactory::Pointer FileListFactory = EpiphanVideoGrabberFactory::New();
+    EpiphanVideoGrabberInterfaceFactory::Pointer FileListFactory = EpiphanVideoGrabberFactory::New();
 
     ObjectFactoryBase::RegisterFactoryInternal(FileListFactory);
   }
 
 protected:
-  EpiphanVideoGrabberFactory();
-  ~EpiphanVideoGrabberFactory();
+  EpiphanVideoGrabberInterfaceFactory();
+  ~EpiphanVideoGrabberInterfaceFactory();
 private:
-  EpiphanVideoGrabberFactory(const Self &); //purposely not implemented
+  EpiphanVideoGrabberInterfaceFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
 };
 } // end namespace itk

@@ -15,50 +15,45 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkEpiphanVideoIO_h
-#define __itkEpiphanVideoIO_h
+#ifndef __itkEpiphanVideoGrabberInterface_h
+#define __itkEpiphanVideoGrabberInterface_h
 
 // Define support for EpiphanVideo
 #ifndef ITK_VIDEO_USE_EPIPHAN
 #define ITK_VIDEO_USE_EPIPHAN
 #endif
 
-#include "itkVideoGrabberBase.h"
+#include "itkVideoGrabberInterfaceBase.h"
 
 namespace itk
 {
-/** \class EpiphanVideoGrabber
+/** \class EpiphanVideoGrabberInterface
  *
- * \brief VideoIO object for reading and writing videos as a sequence of frame
- *        files
+ * \brief Video grabber interface class using Epiphan
  *
- * This VideoIO treats a sequential list of file names as the frames of a
- * video. The frames must be specified in a comma-separated list. Also, the
- * SplitFileNames(...) static method is made public in order to allow the
- * splitting functionality to be accessed publically.
  *
- * \ingroup Video-IO-FileList
+ * \ingroup Video-Grabber-Epiphan
  *
  */
-class ITK_EXPORT EpiphanVideoGrabber:public VideoIOBase
+class ITK_EXPORT EpiphanVideoGrabberInterface: public VideoGrabberInterfaceBase
 {
 public:
   /** Standard class typedefs. */
-  typedef EpiphanVideoGrabber        Self;
-  typedef VideoIOBase          Superclass;
+  typedef EpiphanVideoGrabberInterface       Self;
+  typedef VideoGrabberInterfaceBase          Superclass;
   typedef SmartPointer< Self > Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(EpiphanVideoGrabber, Superclass);
+  itkTypeMacro(EpiphanVideoGrabberInterface, Superclass);
 
   /** Close the reader and writer and reset members */
   virtual void FinishReadingOrWriting();
 
   /** Split up the input file names -- This is public so that places where
-   * EpiphanVideoGrabber is used can access the individual file names. This is
+   * EpiphanVideoGrabberInterface is used can access the individual file names. This is
    * mostly an issue for testing. */
   static std::vector<std::string> SplitFileNames(const char* fileList);
 
@@ -74,18 +69,18 @@ public:
    * file specified. */
   virtual bool CanReadFile(const char *);
 
-  /** Return whether or not the VideoIO can read from a camera */
-  virtual bool CanReadCamera( unsigned long cameraID );
+  /** Return whether or not we can acquire video from a given device */
+  virtual bool CanReadGrabber( unsigned long cameraID );
 
   /** Set the spacing and dimension information for the set filename. */
   virtual void ReadImageInformation();
 
   /** Reads the data from disk into the memory buffer provided. */
-  virtual void Read(void *buffer);
+  virtual void GrabSingleFrame(void *buffer);
 
 
-  /** Set the next frame that should be read. Return true if you operation
-   * succesful */
+  /** Set the next frame that should be read. Return true if the operation
+   * was successful */
   virtual bool SetNextFrameToRead(unsigned long frameNumber);
 
   /** Accessor functions for video specific information */
@@ -126,23 +121,26 @@ public:
 
 
 protected:
-  EpiphanVideoGrabber();
-  ~EpiphanVideoGrabber();
+  EpiphanVideoGrabberInterface();
+  ~EpiphanVideoGrabberInterface();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Reset member variables to empty state closed */
   void ResetMembers();
 
-  /** Open the reader iff the writer is not open */
-  void OpenReader();
+  /**  */
+  void OpenGrabber();
+
+  /**  */
+  void StartGrabbing();
 
   /** Open the writer iff the reader is not open */
-  void OpenWriter();
+  void StopGrabbing();
 
 
 private:
-  EpiphanVideoGrabber(const Self &);     //purposely not implemented
+  EpiphanVideoGrabberInterface(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   /** Member Variables */
@@ -155,4 +153,4 @@ private:
 };
 } // end namespace itk
 
-#endif // __itkEpiphanVideoGrabber_h
+#endif // __itkEpiphanVideoGrabberInterface_h
