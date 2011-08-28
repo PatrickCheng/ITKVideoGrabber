@@ -20,7 +20,7 @@
 #include <highgui.h>
 
 
-int OpenCVVideoGrabberTest2( int argc, char *argv[] )
+int VideoGrabberOpenCVTest2( int argc, char *argv[] )
 {
     int i;
     double sec_per_frame;

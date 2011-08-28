@@ -29,7 +29,7 @@
 #include <itkOpenCVVideoIOFactory.h>
 
 
-int OpenCVVideoGrabberTest3( int argc, char *argv[] )
+int VideoGrabberOpenCVTest3( int argc, char *argv[] )
 {
   const unsigned int Dimension = 2;
   typedef unsigned char IOPixelType;

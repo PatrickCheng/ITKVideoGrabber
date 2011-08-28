@@ -19,7 +19,7 @@
 
 #include <highgui.h>
 
-int OpenCVVideoGrabberTest4( int argc, char *argv[] )
+int VideoGrabberOpenCVTest4( int argc, char *argv[] )
 {
     int c;
     // allocate memory for an image
