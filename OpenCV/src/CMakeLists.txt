@@ -1,6 +1,6 @@
 set(Video-Grabber-OpenCV_SRC
-itkOpenCVVideoGrabber.cxx
-itkOpenCVVideoGrabberFactory.cxx
+itkOpenCVVideoGrabberInterface.cxx
+itkOpenCVVideoGrabberInterfaceFactory.cxx
 )
 
 add_library(Video-Grabber-OpenCV ${Video-Grabber-OpenCV_SRC})

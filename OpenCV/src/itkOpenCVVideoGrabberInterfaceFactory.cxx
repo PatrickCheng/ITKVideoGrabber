@@ -15,48 +15,48 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkOpenCVVideoGrabberFactory.h"
+#include "itkOpenCVVideoGrabberInterfaceFactory.h"
 #include "itkCreateObjectFunction.h"
-#include "itkOpenCVVideoGrabber.h"
+#include "itkOpenCVVideoGrabberInterface.h"
 #include "itkVersion.h"
 
 namespace itk
 {
-OpenCVVideoGrabberFactory::OpenCVVideoGrabberFactory()
+OpenCVVideoGrabberInterfaceFactory::OpenCVVideoGrabberInterfaceFactory()
 {
-  this->RegisterOverride( "itkVideoGrabberBase",
-                          "itkOpenCVVideoGrabber",
-                          "OpenCV Video IO",
+  this->RegisterOverride( "itkVideoGrabberInterfaceBase",
+                          "itkOpenCVVideoGrabberInterface",
+                          "OpenCV VideoGrabber",
                           1,
-                          CreateObjectFunction< OpenCVVideoGrabber >::New() );
+                          CreateObjectFunction< OpenCVVideoGrabberInterface >::New() );
 }
 
-OpenCVVideoGrabberFactory::~OpenCVVideoGrabberFactory()
+OpenCVVideoGrabberInterfaceFactory::~OpenCVVideoGrabberInterfaceFactory()
 {}
 
 const char *
-OpenCVVideoGrabberFactory::GetITKSourceVersion(void) const
+OpenCVVideoGrabberInterfaceFactory::GetITKSourceVersion(void) const
 {
   return ITK_SOURCE_VERSION;
 }
 
 const char *
-OpenCVVideoGrabberFactory::GetDescription() const
+OpenCVVideoGrabberInterfaceFactory::GetDescription() const
 {
-  return "OpenCV VideoGrabber Factory, allows the loading of AVI videos into Insight";
+  return "OpenCV VideoGrabberInterface Factory, allows the acquisition of video into the Insight Toolkit";
 }
 
 // Undocumented API used to register during static initialization.
 // DO NOT CALL DIRECTLY.
 
-static bool OpenCVVideoGrabberFactoryHasBeenRegistered;
+static bool OpenCVVideoGrabberInterfaceFactoryHasBeenRegistered;
 
-void OpenCVVideoGrabberFactoryRegister__Private(void)
+void OpenCVVideoGrabberInterfaceFactoryRegister__Private(void)
 {
-  if( ! OpenCVVideoGrabberFactoryHasBeenRegistered )
+  if( ! OpenCVVideoGrabberInterfaceFactoryHasBeenRegistered )
     {
-    OpenCVVideoGrabberFactoryHasBeenRegistered = true;
-    OpenCVVideoGrabberFactory::RegisterOneFactory();
+    OpenCVVideoGrabberInterfaceFactoryHasBeenRegistered = true;
+    OpenCVVideoGrabberInterfaceFactory::RegisterOneFactory();
     }
 }
 

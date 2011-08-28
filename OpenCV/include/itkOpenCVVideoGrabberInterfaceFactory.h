@@ -15,24 +15,24 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOpenCVVideoGrabberFactory_h
-#define __itkOpenCVVideoGrabberFactory_h
+#ifndef __itkOpenCVVideoGrabberInterfaceFactory_h
+#define __itkOpenCVVideoGrabberInterfaceFactory_h
 
 #include "itkObjectFactoryBase.h"
-#include "itkVideoGrabberBase.h"
+#include "itkVideoGrabberInterfaceBase.h"
 
 namespace itk
 {
-/** \class OpenCVVideoGrabberFactory
- * \brief Create instances of OpenCVVideoGrabber objects using an object factory.
+/** \class OpenCVVideoGrabberInterfaceFactory
+ * \brief Create instances of OpenCVVideoGrabberInterface objects using an object factory.
  *
  * \ingroup Video-Grabber-OpenCV
  */
-class ITK_EXPORT OpenCVVideoGrabberFactory:public ObjectFactoryBase
+class ITK_EXPORT OpenCVVideoGrabberInterfaceFactory:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
-  typedef OpenCVVideoGrabberFactory       Self;
+  typedef OpenCVVideoGrabberInterfaceFactory       Self;
   typedef ObjectFactoryBase          Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -46,23 +46,26 @@ public:
   itkFactorylessNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(OpenCVVideoGrabberFactory, ObjectFactoryBase);
+  itkTypeMacro(OpenCVVideoGrabberInterfaceFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
   static void RegisterOneFactory(void)
   {
-    OpenCVVideoGrabberFactory::Pointer OpenCVFactory = OpenCVVideoGrabberFactory::New();
+    OpenCVVideoGrabberInterfaceFactory::Pointer openCVFactory = OpenCVVideoGrabberInterfaceFactory::New();
 
-    ObjectFactoryBase::RegisterFactoryInternal(OpenCVFactory);
+    ObjectFactoryBase::RegisterFactoryInternal(openCVFactory);
   }
 
 protected:
-  OpenCVVideoGrabberFactory();
-  ~OpenCVVideoGrabberFactory();
+  OpenCVVideoGrabberInterfaceFactory();
+  ~OpenCVVideoGrabberInterfaceFactory();
+
 private:
-  OpenCVVideoGrabberFactory(const Self &); //purposely not implemented
+  OpenCVVideoGrabberInterfaceFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
+
 } // end namespace itk
 
 #endif
