@@ -70,7 +70,9 @@ int main ( int argc, char **argv )
     FrameDifferenceFilterType::New();
 
   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoIOFactory::New() );
+  std::cout << "Reading input video from : " << argv[1] << std::endl;
   reader->SetFileName( argv[1] );
+  std::cout << "Writing output video to : " << argv[1] << std::endl;
   writer->SetFileName( argv[2] );
 
   frameDifferenceFilter->SetFrameOffset(1);
