@@ -25,6 +25,12 @@ The Epiphan SDK can be downloaded from
 Before attempting to use your Epiphan frame grabber in linux, you should test it in your system following
 the directives in http://www.epiphan.com/solutions_new/image-capture/how-to-install-frame-grabber-drivers-on-a-workstation-running-linux-and-view-the-grabbed-video/
 
+* Installing ffmpeg
+
+You should normaly install the libavXXX-dev packages and libswscale-dev package.
+
+e.g. sudo apt-get install libavformat-dev libavcodec-dev libavfilter-dev libswscale-dev
+
 * Installing libdc1394/libraw1394
 
 The two libraries libdc1394 and libraw1394 can also be installed with a package tool. For instance, under Debian Linux, the libraries are installed with:
