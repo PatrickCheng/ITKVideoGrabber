@@ -24,11 +24,6 @@
 namespace itk
 {
 
-///////////////////////////////////////////////////////////////////////////////
-// Constructor, Destructor, and Print
-//
-
-
 //
 // Constructor
 //
@@ -37,15 +32,13 @@ EpiphanVideoGrabberInterface::EpiphanVideoGrabberInterface()
   this->ResetMembers();
 }
 
-
 //
 // Destructor
 //
 EpiphanVideoGrabberInterface::~EpiphanVideoGrabberInterface()
 {
-  this->FinishReadingOrWriting();
+  this->CloseGrabber();
 }
-
 
 //
 // PrintSelf
