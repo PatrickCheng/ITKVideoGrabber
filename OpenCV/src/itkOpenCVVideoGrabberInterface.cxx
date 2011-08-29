@@ -23,11 +23,6 @@
 namespace itk
 {
 
-///////////////////////////////////////////////////////////////////////////////
-// Constructor, Destructor, and Print
-//
-
-
 //
 // Constructor
 //
@@ -36,15 +31,13 @@ OpenCVVideoGrabberInterface::OpenCVVideoGrabberInterface()
   this->ResetMembers();
 }
 
-
 //
 // Destructor
 //
 OpenCVVideoGrabberInterface::~OpenCVVideoGrabberInterface()
 {
-  this->FinishReadingOrWriting();
+  this->CloseGrabber();
 }
-
 
 //
 // PrintSelf
@@ -69,24 +62,9 @@ void OpenCVVideoGrabberInterface::PrintSelf(std::ostream & os, Indent indent) co
 //
 void OpenCVVideoGrabberInterface::FinishReadingOrWriting()
 {
-  if (this->m_Capture != NULL)
-    {
-    cvReleaseCapture(&(this->m_Capture));
-    }
-  if (this->m_CVImage != NULL)
-    {
-    cvReleaseImage(&(this->m_CVImage));
-    }
 
-  this->ResetMembers();
 
 }
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Member Accessors
-//
-
 
 //
 // GetPositionInMSec
@@ -270,8 +248,10 @@ void OpenCVVideoGrabberInterface::UpdateGrabberProperties()
 //
 // OpenGrabber
 //
-bool OpenCVVideoGrabberInterface::OpenGrabber()
+bool OpenCVVideoGrabberInterface::OpenGrabber(int index)
 {
+  this->m_CameraIndex = index;
+
   if (this->m_GrabberIsOpen)
     {
     itkExceptionMacro("Cannot open grabber if already open");
@@ -287,7 +267,7 @@ bool OpenCVVideoGrabberInterface::OpenGrabber()
     // Make sure it opened right
     if (!localCapture)
       {
-      itkExceptionMacro(<< "Cannot read from camera " << this->m_CameraIndex);
+      itkExceptionMacro(<< "Could not open OpenCV video grabber " << this->m_CameraIndex);
       }
 
     // Query the frame and set the frame total to 1
@@ -333,17 +313,31 @@ bool OpenCVVideoGrabberInterface::OpenGrabber()
       }
     else
       {
-      itkExceptionMacro("Video failed to open");
+      itkExceptionMacro("OpenCV video grabber failed to open");
       }
 }
 
 bool OpenCVVideoGrabberInterface::CloseGrabber()
 {
-  return false;
+  if (this->m_Capture != NULL)
+    {
+    cvReleaseCapture(&(this->m_Capture));
+    this->m_Capture = 0;
+    }
+  if (this->m_CVImage != NULL)
+    {
+    cvReleaseImage(&(this->m_CVImage));
+    m_CVImage = 0;
+    }
+
+  this->ResetMembers();
+
+  return true;
 }
 
 bool OpenCVVideoGrabberInterface::StartGrabbing()
 {
+
   return false;
 }
 
@@ -370,8 +364,7 @@ void OpenCVVideoGrabberInterface::ResetMembers()
 
   // Default to reading from a file
   this->m_CameraIndex = 0;
-/*
-  // Members from ImageIOBase
+
   this->m_Dimensions.clear();
   this->m_NumberOfComponents = 0;
   this->m_PixelType = SCALAR;
@@ -381,7 +374,6 @@ void OpenCVVideoGrabberInterface::ResetMembers()
   this->m_Spacing[1] = 1.0;
   this->m_Origin[0] = 0.0;
   this->m_Origin[1] = 0.0;
-*/
 }
 
 

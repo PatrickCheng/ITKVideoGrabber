@@ -54,9 +54,6 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(OpenCVVideoGrabberInterface, Superclass);
 
-  /** Close the reader and writer and reset members */
-  virtual void FinishReadingOrWriting();
-
   /** Establish connection and opens the active frame grabber
   * it it is not already open */
   virtual bool OpenGrabber();
