@@ -20,7 +20,7 @@
 #include <highgui.h>
 
 /*
- * This examples performs basic video grabbing from the default device
+ * This example performs basic video grabbing from the default device
  * (first available camera interface)
  */
 int main ( int argc, char **argv )
