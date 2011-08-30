@@ -58,15 +58,6 @@ void OpenCVVideoGrabberInterface::PrintSelf(std::ostream & os, Indent indent) co
 }
 
 //
-// FinishReadingOrWriting
-//
-void OpenCVVideoGrabberInterface::FinishReadingOrWriting()
-{
-
-
-}
-
-//
 // GetPositionInMSec
 //
 double OpenCVVideoGrabberInterface::GetPositionInMSec()
@@ -166,7 +157,7 @@ bool OpenCVVideoGrabberInterface::GrabSingleFrame(void *buffer)
   // If grabber is not already open, open it and keep it open
   if (!this->m_GrabberIsOpen)
     {
-    this->OpenGrabber();
+    this->OpenGrabber(this->m_CameraIndex);
     }
 
   // Read the desired frame
@@ -207,7 +198,7 @@ bool OpenCVVideoGrabberInterface::SetNextFrameToRead(unsigned long frameNumber)
   // If the capture isn't open, open it
   if (!this->m_GrabberIsOpen)
     {
-    this->OpenGrabber();
+    this->OpenGrabber(this->m_CameraIndex);
     }
 
   // Make sure we're not setting past the end
@@ -369,7 +360,7 @@ void OpenCVVideoGrabberInterface::ResetMembers()
   this->m_NumberOfComponents = 0;
   this->m_PixelType = SCALAR;
   this->m_ComponentType = UCHAR;
-  this->SetNumberOfDimensions(2);
+//  this->SetNumberOfDimensions(2);
   this->m_Spacing[0] = 1.0;
   this->m_Spacing[1] = 1.0;
   this->m_Origin[0] = 0.0;
