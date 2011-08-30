@@ -56,7 +56,7 @@ public:
 
   /** Establish connection and opens the active frame grabber
   * it it is not already open */
-  virtual bool OpenGrabber();
+  virtual bool OpenGrabber(int index);
 
   /** Disconnect the active frame grabber */
   virtual bool CloseGrabber();
