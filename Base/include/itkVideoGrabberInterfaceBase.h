@@ -31,7 +31,7 @@ namespace itk
  *
  * VideoGrabberInterfaceBase is an abstract base class for ITK video grabber classes
  *
- * A Pluggable factory pattern is used. This allows different kinds of
+ * A pluggable factory pattern is used. This allows different kinds of
  * frame grabbers to be registered (even at run time) without having to
  * modify the code in this class.
  *
@@ -80,6 +80,13 @@ public:
         * SCALAR, VECTOR to SCALAR). */
        typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
 
+       /** Enums used to manipulate the component type. The component type
+          * refers to the actual storage class associated with either a
+          * SCALAR pixel type or elements of a compound pixel.
+          */
+         typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
+                         ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
+
 public:
 
   /** Standard class typedefs. */
@@ -92,7 +99,7 @@ public:
   itkTypeMacro(VideoGrabberInterfaceBase, Superclass);
 
   /** Establish connection and opens the active frame grabber */
-  virtual bool OpenGrabber() = 0;
+  virtual bool OpenGrabber(int index) = 0;
 
   /** Disconnect the active frame grabber */
   virtual bool CloseGrabber() = 0;
@@ -133,6 +140,7 @@ protected:
   double          m_Ratio;
   double          m_PositionInMSec;
   bool            m_GrabberIsOpen;
+  VideoComponentType m_ComponentType;
 
   /** device index for reading from a camera (may move to base class) */
   int m_CameraIndex;
