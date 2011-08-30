@@ -1,51 +1,51 @@
 
 find_package ( OpenCV REQUIRED )
 
-# OpenCVVideoGrabberExample1
+# VideoGrabberOpenCVExample1
 
-add_executable(OpenCVVideoGrabberExample1 
-  OpenCVVideoGrabberExample1.cxx)
-target_link_libraries(OpenCVVideoGrabberExample1
+add_executable(VideoGrabberOpenCVExample1 
+  VideoGrabberOpenCVExample1.cxx)
+target_link_libraries(VideoGrabberOpenCVExample1
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# OpenCVVideoGrabberExample2
+# VideoGrabberOpenCVExample2
 
-add_executable(OpenCVVideoGrabberExample2 
-  OpenCVVideoGrabberExample2.cxx)
-target_link_libraries(OpenCVVideoGrabberExample2
+add_executable(VideoGrabberOpenCVExample2 
+  VideoGrabberOpenCVExample2.cxx)
+target_link_libraries(VideoGrabberOpenCVExample2
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# OpenCVVideoGrabberExample3
+# VideoGrabberOpenCVExample3
 
-add_executable(OpenCVVideoGrabberExample3
-  OpenCVVideoGrabberExample3.cxx)
-target_link_libraries(OpenCVVideoGrabberExample3
+add_executable(VideoGrabberOpenCVExample3
+  VideoGrabberOpenCVExample3.cxx)
+target_link_libraries(VideoGrabberOpenCVExample3
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# OpenCVVideoGrabberExample4
+# VideoGrabberOpenCVExample4
 
-add_executable(OpenCVVideoGrabberExample4
-  OpenCVVideoGrabberExample4.cxx)
-target_link_libraries(OpenCVVideoGrabberExample4
+add_executable(VideoGrabberOpenCVExample4
+  VideoGrabberOpenCVExample4.cxx)
+target_link_libraries(VideoGrabberOpenCVExample4
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# OpenCVVideoGrabberExample5
+# VideoGrabberOpenCVExample5
 
-add_executable(OpenCVVideoGrabberExample5
-  OpenCVVideoGrabberExample5.cxx)
-target_link_libraries(OpenCVVideoGrabberExample5
+add_executable(VideoGrabberOpenCVExample5
+  VideoGrabberOpenCVExample5.cxx)
+target_link_libraries(VideoGrabberOpenCVExample5
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# OpenCVVideoGrabberExample6
+# VideoGrabberOpenCVExample6
 
-add_executable(OpenCVVideoGrabberExample6
-  OpenCVVideoGrabberExample6.cxx)
-target_link_libraries(OpenCVVideoGrabberExample6
+add_executable(VideoGrabberOpenCVExample6
+  VideoGrabberOpenCVExample6.cxx)
+target_link_libraries(VideoGrabberOpenCVExample6
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# OpenCVVideoGrabberExample7
+# VideoGrabberOpenCVExample7
 
-add_executable(OpenCVVideoGrabberExample7
-  OpenCVVideoGrabberExample7.cxx)
-target_link_libraries(OpenCVVideoGrabberExample7
+add_executable(VideoGrabberOpenCVExample7
+  VideoGrabberOpenCVExample7.cxx)
+target_link_libraries(VideoGrabberOpenCVExample7
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
