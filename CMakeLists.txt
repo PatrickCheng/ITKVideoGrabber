@@ -1,8 +1,9 @@
 project(VideoGrabber)
 itk_module_impl()
 
-
 OPTION(USE_OpenCV "Build OpenCV interface to frame grabbers." ON)
+
+LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Cmake")
 
 
 #-----------------------------------------------------------------------------
@@ -34,10 +35,19 @@ IF (USE_OpenCV)
         ${ITKVideoGrabber_LIBRARIES}
         ${OpenCV_LIBS}    
     )
+
     add_subdirectory(OpenCV)
 ENDIF (USE_OpenCV)
 
 IF (USE_Epiphan)
+    find_package ( Epiphan REQUIRED )
+    include_directories( ${Epiphan_INCLUDE_DIRS} )
+
+    set(Epiphan_LIBRARIES 
+        ${Epiphan_LIBRARIES}
+        ${Epiphan_LIBS}    
+    )
+
     add_subdirectory(Epiphan)
 ENDIF (USE_Epiphan)
 
