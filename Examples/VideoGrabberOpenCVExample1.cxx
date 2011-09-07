@@ -25,9 +25,6 @@
  */
 int main ( int argc, char **argv )
 {
-    // allocate memory for an image
-    IplImage *img;
-
     // capture from video device #1
     CvCapture* capture = cvCreateCameraCapture(0);
 
@@ -49,6 +46,9 @@ int main ( int argc, char **argv )
     // position the window
     cvMoveWindow(windowName.c_str(), 100, 100);
     int c = 0;
+
+    // allocate memory for an image
+    IplImage *img = 0;
 
     while(1)
     {

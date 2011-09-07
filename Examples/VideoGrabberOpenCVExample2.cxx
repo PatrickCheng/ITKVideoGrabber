@@ -98,6 +98,7 @@ int main ( int argc, char **argv )
         cvShowImage(windowName.c_str(), img_video );
 
         c=cvWaitKey(10);
+
         // escape key terminates program
         if(c == 27)
            break;
