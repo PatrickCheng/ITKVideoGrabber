@@ -15,33 +15,35 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkFileListVideoIOFactory.h"
+
+#include "itkEpiphanVideoGrabberInterfaceFactory.h"
 #include "itkCreateObjectFunction.h"
-#include "itkFileListVideoIO.h"
+#include "itkEpiphanVideoGrabberInterface.h"
 #include "itkVersion.h"
 
 namespace itk
 {
-FileListVideoIOFactory::FileListVideoIOFactory()
+
+EpiphanVideoGrabberInterfaceFactory::EpiphanVideoGrabberInterfaceFactory()
 {
-  this->RegisterOverride( "itkVideoIOBase",
-                          "itkFileListVideoIO",
-                          "FileList Video IO",
-                          1,
-                          CreateObjectFunction< FileListVideoIO >::New() );
+  this->RegisterOverride( "itkVideoGrabberInterfaceBase",
+                            "itkEpiphanVideoGrabberInterface",
+                            "Epiphan VideoGrabber",
+                            1,
+                            CreateObjectFunction< EpiphanVideoGrabberInterface >::New() );
 }
 
-FileListVideoIOFactory::~FileListVideoIOFactory()
+EpiphanVideoGrabberInterfaceFactory::~EpiphanVideoGrabberInterfaceFactory()
 {}
 
 const char *
-FileListVideoIOFactory::GetITKSourceVersion(void) const
+EpiphanVideoGrabberInterfaceFactory::GetITKSourceVersion(void) const
 {
   return ITK_SOURCE_VERSION;
 }
 
 const char *
-FileListVideoIOFactory::GetDescription() const
+EpiphanVideoGrabberInterfaceFactory::GetDescription() const
 {
   return "FileList VideoIO Factory, allows the loading of a list of image files as a videos into Insight";
 }
@@ -49,14 +51,14 @@ FileListVideoIOFactory::GetDescription() const
 // Undocumented API used to register during static initialization.
 // DO NOT CALL DIRECTLY.
 
-static bool FileListVideoIOFactoryHasBeenRegistered;
+static bool EpiphanVideoGrabberInterfaceFactoryHasBeenRegistered;
 
-void FileListVideoIOFactoryRegister__Private(void)
+void EpiphanVideoGrabberInterfaceFactoryRegister__Private(void)
 {
-  if( ! FileListVideoIOFactoryHasBeenRegistered )
+  if( ! EpiphanVideoGrabberInterfaceFactoryHasBeenRegistered )
     {
-    FileListVideoIOFactoryHasBeenRegistered = true;
-    FileListVideoIOFactory::RegisterOneFactory();
+      EpiphanVideoGrabberInterfaceFactoryHasBeenRegistered = true;
+      EpiphanVideoGrabberInterfaceFactory::RegisterOneFactory();
     }
 }
 

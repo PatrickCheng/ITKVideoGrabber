@@ -65,10 +65,6 @@ public:
   /** Set to reading from a camera */
   virtual void SetReadFromCamera();
 
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanReadFile(const char *);
-
   /** Return whether or not we can acquire video from a given device */
   virtual bool CanReadGrabber( unsigned long cameraID );
 
@@ -76,8 +72,19 @@ public:
   virtual void ReadImageInformation();
 
   /** Reads the data from disk into the memory buffer provided. */
-  virtual void GrabSingleFrame(void *buffer);
+  virtual bool GrabSingleFrame(void *buffer);
 
+  /**  */
+  virtual bool CloseGrabber();
+
+  /**  */
+  virtual bool OpenGrabber(int index);
+
+  /** Start grabbing from active device */
+  virtual bool StartGrabbing();
+
+  /** Stop active device */
+  virtual bool StopGrabbing();
 
   /** Set the next frame that should be read. Return true if the operation
    * was successful */
@@ -115,10 +122,8 @@ public:
   virtual void Write(const void *buffer);
 
   /** Set Writer Parameters */
-  virtual void SetWriterParameters(double fps, std::vector<SizeValueType> dim, const char* fourCC,
-                                   unsigned int nChannels, IOComponentType componentType);
-
-
+//  virtual void SetWriterParameters(double fps, std::vector<SizeValueType> dim, const char* fourCC,
+//                                   unsigned int nChannels, IOComponentType componentType);
 
 protected:
   EpiphanVideoGrabberInterface();
@@ -129,26 +134,15 @@ protected:
   /** Reset member variables to empty state closed */
   void ResetMembers();
 
-  /**  */
-  void OpenGrabber();
-
-  /**  */
-  void StartGrabbing();
-
-  /** Open the writer iff the reader is not open */
-  void StopGrabbing();
-
-
 private:
   EpiphanVideoGrabberInterface(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   /** Member Variables */
-  ImageIOBase::Pointer m_ImageIO;
+//  ImageIOBase::Pointer m_ImageIO;
 
   /** List of files to read */
-  std::vector<std::string> m_FileNames;
-  
+//  std::vector<std::string> m_FileNames;
 
 };
 } // end namespace itk

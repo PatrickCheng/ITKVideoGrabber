@@ -51,9 +51,9 @@ public:
   /** Register one factory of this type  */
   static void RegisterOneFactory(void)
   {
-    EpiphanVideoGrabberInterfaceFactory::Pointer FileListFactory = EpiphanVideoGrabberFactory::New();
+    EpiphanVideoGrabberInterfaceFactory::Pointer epiphanFactory = EpiphanVideoGrabberInterfaceFactory::New();
 
-    ObjectFactoryBase::RegisterFactoryInternal(FileListFactory);
+    ObjectFactoryBase::RegisterFactoryInternal(epiphanFactory);
   }
 
 protected:
