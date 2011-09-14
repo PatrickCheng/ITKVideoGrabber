@@ -75,6 +75,6 @@ IF (USE_QuickTime)
 
 ENDIF(USE_QuickTime)
 
-add_subdirectory(Examples)
+#add_subdirectory(Examples)
 
 
