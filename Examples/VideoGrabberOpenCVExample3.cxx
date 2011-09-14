@@ -21,82 +21,20 @@
 #include <stdio.h>
 
 #include <itkVideoStream.h>
-#include <itkCurvatureFlowImageFilter.h>
-#include <itkCastImageFilter.h>
-#include <itkImageFilterToVideoFilterWrapper.h>
-#include <itkFrameDifferenceVideoFilter.h>
-#include <itkVideoFileReader.h>
-#include <itkVideoFileWriter.h>
-#include <itkOpenCVVideoIOFactory.h>
+#include <itkOpenCVVideoGrabberInterface.h>
 
-
+/*
+ * This example performs basic video grabbing from the default device
+ * (first available camera interface) using itkOpenCVVideoGrabberInterface
+ */
 int main ( int argc, char **argv )
 {
-  if( argc < 3 )
-  {
-  std::cout << "Usage: " << argv[0] << "input_video_file output_video_file" << std::endl;
-  return EXIT_FAILURE;
-  }
+   // Set up a factory for itkOpenCVVideoGrabberInterface
+   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterface::New() );
+   itk::OpenCVVideoGrabberInterface::Pointer grabber = itk::OpenCVVideoGrabberInterface::New();
 
-  const unsigned int Dimension = 2;
-  typedef unsigned char IOPixelType;
-  typedef float RealPixelType;
-  typedef itk::Image< IOPixelType, Dimension >   IOFrameType;
-  typedef itk::Image< RealPixelType, Dimension > RealFrameType;
-  typedef itk::VideoStream< IOFrameType >        IOVideoType;
-  typedef itk::VideoStream< RealFrameType >      RealVideoType;
+   grabber->OpenGrabber(0);
+   grabber->GrabSingleFrame();
 
-  typedef itk::VideoFileReader< IOVideoType >    ReaderType;
-  typedef itk::VideoFileWriter< IOVideoType >    WriterType;
-  typedef itk::CastImageFilter< RealFrameType, IOFrameType >
-                                                 CastImageFilterType;
-  typedef itk::ImageFilterToVideoFilterWrapper< CastImageFilterType >
-                                                 CastVideoFilterType;
-  typedef itk::CurvatureFlowImageFilter< IOFrameType, RealFrameType >
-                                                 ImageFilterType;
-  typedef itk::ImageFilterToVideoFilterWrapper< ImageFilterType >
-                                                 VideoFilterType;
-
-  typedef itk::FrameDifferenceVideoFilter< IOVideoType, IOVideoType >
-                                                 FrameDifferenceFilterType;
-
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer = WriterType::New();
-  ImageFilterType::Pointer imageFilter = ImageFilterType::New();
-  VideoFilterType::Pointer videoFilter = VideoFilterType::New();
-  CastImageFilterType::Pointer imageCaster = CastImageFilterType::New();
-  CastVideoFilterType::Pointer videoCaster = CastVideoFilterType::New();
-  FrameDifferenceFilterType::Pointer frameDifferenceFilter =
-    FrameDifferenceFilterType::New();
-
-  itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoIOFactory::New() );
-  std::cout << "Reading input video from : " << argv[1] << std::endl;
-  reader->SetFileName( argv[1] );
-  std::cout << "Writing output video to : " << argv[1] << std::endl;
-  writer->SetFileName( argv[2] );
-
-  frameDifferenceFilter->SetFrameOffset(1);
-
-  videoCaster->SetImageFilter( imageCaster );
-
-  imageFilter->SetTimeStep( 0.5 );
-  imageFilter->SetNumberOfIterations( 20 );
-  videoFilter->SetImageFilter( imageFilter );
-
-  videoFilter->SetInput( reader->GetOutput() );
-  videoCaster->SetInput( videoFilter->GetOutput() );
-  frameDifferenceFilter->SetInput( videoCaster->GetOutput() );
-  writer->SetInput( frameDifferenceFilter->GetOutput() );
-
-  try
-    {
-    writer->Update();
-    }
-  catch( itk::ExceptionObject & excp )
-    {
-    std::cerr << excp.GetDescription() << std::endl;
-    return EXIT_FAILURE;
-    }
-
-  return EXIT_SUCCESS;
+   return EXIT_SUCCESS;
 }
