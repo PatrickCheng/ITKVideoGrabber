@@ -22,30 +22,3 @@ add_executable(VideoGrabberOpenCVExample3
 target_link_libraries(VideoGrabberOpenCVExample3
   ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
 
-# VideoGrabberOpenCVExample4
-
-add_executable(VideoGrabberOpenCVExample4
-  VideoGrabberOpenCVExample4.cxx)
-target_link_libraries(VideoGrabberOpenCVExample4
-  ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
-
-# VideoGrabberOpenCVExample5
-
-add_executable(VideoGrabberOpenCVExample5
-  VideoGrabberOpenCVExample5.cxx)
-target_link_libraries(VideoGrabberOpenCVExample5
-  ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
-
-# VideoGrabberOpenCVExample6
-
-add_executable(VideoGrabberOpenCVExample6
-  VideoGrabberOpenCVExample6.cxx)
-target_link_libraries(VideoGrabberOpenCVExample6
-  ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
-
-# VideoGrabberOpenCVExample7
-
-add_executable(VideoGrabberOpenCVExample7
-  VideoGrabberOpenCVExample7.cxx)
-target_link_libraries(VideoGrabberOpenCVExample7
-  ${Video-Grabber_LIBRARIES} ${OpenCV_LIBS})
