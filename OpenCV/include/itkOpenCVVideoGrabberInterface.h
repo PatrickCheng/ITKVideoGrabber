@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOpenCVVideoGrabber_h
-#define __itkOpenCVVideoGrabber_h
+#ifndef __itkOpenCVVideoGrabberInterface_h
+#define __itkOpenCVVideoGrabberInterface_h
 
 // Define support for OpenCVVideo
 #ifndef ITK_VIDEO_USE_OPENCV
@@ -34,7 +34,7 @@
 
 namespace itk
 {
-/** \class OpenCVVideoGrabber
+/** \class OpenCVVideoGrabberInterface
  *
  * \brief Video grabber interface class using OpenCV
  *
@@ -75,10 +75,6 @@ public:
 
   /** Set the spacing and dimension information for the set filename. */
   virtual void ReadImageInformation();
-
-  /** Set the next frame that should be read. Return true if you operation
-   * successful */
-  virtual bool SetNextFrameToRead(unsigned long frameNumber);
 
   /** Accessor functions for video specific information */
   virtual double GetPositionInMSec();
