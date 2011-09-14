@@ -191,35 +191,6 @@ bool OpenCVVideoGrabberInterface::GrabSingleFrame(void *buffer)
 
 
 //
-// SetNextFrameToRead
-//
-bool OpenCVVideoGrabberInterface::SetNextFrameToRead(unsigned long frameNumber)
-{
-  // If the capture isn't open, open it
-  if (!this->m_GrabberIsOpen)
-    {
-    this->OpenGrabber(this->m_CameraIndex);
-    }
-
-  // Make sure we're not setting past the end
-  if (frameNumber > this->m_LastIFrame)
-    {
-    itkDebugMacro(<< "Warning: Trying to seek past end of video (past last I-Frame)");
-    return false;
-    }
-
-  if (this->m_Capture != NULL)
-    {
-    cvSetCaptureProperty(this->m_Capture,CV_CAP_PROP_POS_FRAMES, frameNumber);
-    this->UpdateGrabberProperties();
-    this->Modified();
-
-    return true;
-    }
-  return false;
-}
-
-//
 // UpdateGrabberProperties
 //
 void OpenCVVideoGrabberInterface::UpdateGrabberProperties()
