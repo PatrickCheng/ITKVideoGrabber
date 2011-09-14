@@ -66,15 +66,35 @@ bool EpiphanVideoGrabberInterface::StopGrabbing()
 
 bool EpiphanVideoGrabberInterface::GrabSingleFrame(void *buffer)
 {
+  // If grabber is not already open, open it and keep it open
+   if (!this->m_GrabberIsOpen)
+     {
+     this->OpenGrabber(this->m_CameraIndex);
+     }
 
+   // get frame
+
+   // convert color space
+
+   // Update the frame-dependent properties
+   this->UpdateGrabberProperties();
+
+   // Put the frame's buffer into the supplied output buffer
+   //void* tempBuffer = reinterpret_cast<void*>(this->m_CVImage->imageData);
+   //size_t bufferSize = this->m_CVImage->imageSize;
+   //memcpy(buffer, tempBuffer, bufferSize);
 }
 
 //
-// FinishReadingOrWriting
+// UpdateGrabberProperties
 //
-void EpiphanVideoGrabberInterface::FinishReadingOrWriting()
+void EpiphanVideoGrabberInterface::UpdateGrabberProperties()
 {
-  this->ResetMembers();
+  this->m_CurrentFrame = 0;
+  this->m_PositionInMSec = 0.0;
+  this->m_FpS = 0;
+ // this->m_Ratio = 0.0;
+ // this->m_FourCC = 0;
 }
 
 //
@@ -134,39 +154,6 @@ unsigned long EpiphanVideoGrabberInterface::GetLastIFrame()
 }
 
 //
-// SplitFileNames ','
-//
-std::vector<std::string> EpiphanVideoGrabberInterface::SplitFileNames(const char* fileList)
-{
-  std::string str = fileList;
-
-  std::vector<std::string> out;
-
-  int pos = 0;
-  int len = str.length();
-  while (pos != -1 && len > 0)
-    {
-    // Get the substring
-    str = str.substr(pos, len);
-
-    // Update pos
-    pos = str.find(',');
-
-    // Add the filename to the list
-    out.push_back(str.substr(0,pos));
-
-    // Move past the delimiter
-    if (pos != -1)
-      {
-      pos++;
-      }
-    len -= pos;
-    }
-
-  return out;
-}
-
-//
 // CanReadCamera
 //
 bool EpiphanVideoGrabberInterface::CanReadGrabber( unsigned long cameraID )
@@ -179,70 +166,6 @@ bool EpiphanVideoGrabberInterface::CanReadGrabber( unsigned long cameraID )
 // ReadImageInformation
 //
 void EpiphanVideoGrabberInterface::ReadImageInformation()
-{
-
-}
-
-//
-// SetNextFrameToRead
-//
-bool EpiphanVideoGrabberInterface::SetNextFrameToRead(unsigned long frameNumber)
-{
-
-  if (frameNumber >= m_FrameTotal)
-    {
-    return false;
-    }
-
-  m_CurrentFrame = frameNumber;
-  return true;
-}
-
-// CanWriteFile
-//
-bool EpiphanVideoGrabberInterface::CanWriteFile(const char* filename)
-{
-
-  // Make sure file names have been specified
-  std::vector<std::string> fileList = SplitFileNames(filename);
-  if (fileList.size() == 0)
-    {
-    return false;
-    }
-
-  // Make sure all file names have the same extension
-  for (unsigned int i = 1; i < fileList.size(); ++i)
-    {
-    int prevExtPos = fileList[i-1].rfind(".");
-    int extPos = fileList[i].rfind(".");
-    if (prevExtPos == -1 || extPos == -1)
-      {
-      return false;
-      }
-    std::string prevExt = fileList[i-1].substr(prevExtPos + 1, fileList[i-1].length()-prevExtPos-1);
-    std::string ext = fileList[i].substr(extPos + 1, fileList[i].length()-extPos-1);
-
-    if (strcmp(prevExt.c_str(), ext.c_str()))
-      {
-      return false;
-      }
-    }
-
-  // Make sure we can instantiate an ImageIO to write the first file
-  ImageIOBase::Pointer ioTemp = ImageIOFactory::CreateImageIO(
-      fileList[0].c_str(), ImageIOFactory::WriteMode);
-  if (ioTemp.IsNull())
-    {
-    return false;
-    }
-
-  return true;
-}
-
-//
-// WriteImageInformation
-//
-void EpiphanVideoGrabberInterface::WriteImageInformation()
 {
 
 }

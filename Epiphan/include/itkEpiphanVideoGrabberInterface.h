@@ -49,35 +49,19 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(EpiphanVideoGrabberInterface, Superclass);
 
-  /** Close the reader and writer and reset members */
-  virtual void FinishReadingOrWriting();
-
-  /** Split up the input file names -- This is public so that places where
-   * EpiphanVideoGrabberInterface is used can access the individual file names. This is
-   * mostly an issue for testing. */
-  static std::vector<std::string> SplitFileNames(const char* fileList);
-
-  /*-------- This part of the interface deals with reading data. ------ */
-
-  /** Set to reading from file */
-  virtual void SetReadFromFile();
-
-  /** Set to reading from a camera */
-  virtual void SetReadFromCamera();
-
   /** Return whether or not we can acquire video from a given device */
   virtual bool CanReadGrabber( unsigned long cameraID );
 
   /** Set the spacing and dimension information for the set filename. */
   virtual void ReadImageInformation();
 
-  /** Reads the data from disk into the memory buffer provided. */
+  /** Grab a single frame into the memory buffer provided. */
   virtual bool GrabSingleFrame(void *buffer);
 
-  /**  */
+  /** Close the active device */
   virtual bool CloseGrabber();
 
-  /**  */
+  /** Set device #index as the active */
   virtual bool OpenGrabber(int index);
 
   /** Start grabbing from active device */
@@ -85,10 +69,6 @@ public:
 
   /** Stop active device */
   virtual bool StopGrabbing();
-
-  /** Set the next frame that should be read. Return true if the operation
-   * was successful */
-  virtual bool SetNextFrameToRead(unsigned long frameNumber);
 
   /** Accessor functions for video specific information */
   virtual double GetPositionInMSec();
@@ -99,31 +79,14 @@ public:
   virtual unsigned int GetIFrameInterval();
   virtual unsigned long GetLastIFrame();
 
-  /** Override SetFileName to do parsing */
-  virtual void SetFileName(const char* fileList);
-
   /** Override Accessors to pass through to internal image reader */
   virtual double GetSpacing(unsigned int i) const;
   virtual double GetOrigin(unsigned int i) const;
   virtual std::vector< double > GetDirection(unsigned int i) const;
 
-  /*-------- This part of the interfaces deals with writing data. ----- */
-
-  /** Determine the file type. Returns true if this ImageIO can write the
-   * file specified. */
-  virtual bool CanWriteFile(const char *);
-
-  /** Writes the spacing and dimentions of the image.
-   * Assumes SetFileName has been called with a valid file name. */
-  virtual void WriteImageInformation();
-
-  /** Writes the data to disk from the memory buffer provided. Make sure
-   * that the IORegion has been set properly. */
-  virtual void Write(const void *buffer);
-
-  /** Set Writer Parameters */
-//  virtual void SetWriterParameters(double fps, std::vector<SizeValueType> dim, const char* fourCC,
-//                                   unsigned int nChannels, IOComponentType componentType);
+  /** Get/Set the camera index */
+  virtual void SetCameraIndex(int idx);
+  virtual int GetCameraIndex();
 
 protected:
   EpiphanVideoGrabberInterface();
@@ -134,15 +97,11 @@ protected:
   /** Reset member variables to empty state closed */
   void ResetMembers();
 
+  void UpdateGrabberProperties();
+
 private:
   EpiphanVideoGrabberInterface(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
-
-  /** Member Variables */
-//  ImageIOBase::Pointer m_ImageIO;
-
-  /** List of files to read */
-//  std::vector<std::string> m_FileNames;
 
 };
 } // end namespace itk
