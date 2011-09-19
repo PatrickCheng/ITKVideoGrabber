@@ -21,6 +21,7 @@
 #include <stdio.h>
 
 #include <itkVideoStream.h>
+#include <itkOpenCVVideoGrabberInterfaceFactory.h>
 #include <itkOpenCVVideoGrabberInterface.h>
 
 /*
@@ -29,12 +30,16 @@
  */
 int main ( int argc, char **argv )
 {
-   // Set up a factory for itkOpenCVVideoGrabberInterface
-   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterface::New() );
+   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterfaceFactory::New() );
+
    itk::OpenCVVideoGrabberInterface::Pointer grabber = itk::OpenCVVideoGrabberInterface::New();
 
-   grabber->OpenGrabber(0);
-   grabber->GrabSingleFrame();
+   if (!grabber->OpenGrabber(0))
+   {
+      std::cerr << "Could not open default grabber device" << std::endl;
+      return EXIT_FAILURE;
+   }
+//   grabber->GrabSingleFrame();
 
    return EXIT_SUCCESS;
 }

@@ -21,9 +21,8 @@ ENDIF(UNIX)
 
 set(ITKVideoGrabber_LIBRARIES 
    ITK-Common
-   ITK-Thresholding
-   ITK-ImageFeature
-   ITK-CurvatureFlow )
+   Video-Grabber-Base
+   )
 
 add_subdirectory(Base)
 
@@ -32,7 +31,8 @@ IF (USE_OpenCV)
     include_directories( ${OpenCV_INCLUDE_DIRS} )
 
     set(ITKVideoGrabber_LIBRARIES 
-        ${ITKVideoGrabber_LIBRARIES}
+        ${ITKVideoGrabber_LIBRARIES}        
+        Video-Grabber-OpenCV
         ${OpenCV_LIBS}    
     )
 
@@ -43,8 +43,8 @@ IF (USE_Epiphan)
     find_package ( Epiphan REQUIRED )
     include_directories( ${Epiphan_INCLUDE_DIRS} )
 
-    set(Epiphan_LIBRARIES 
-        ${Epiphan_LIBRARIES}
+    set(ITKVideoGrabber_LIBRARIES 
+        ${ITKVideoGrabber_LIBRARIES}
         ${Epiphan_LIBS}    
     )
 

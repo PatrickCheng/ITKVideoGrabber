@@ -131,8 +131,13 @@ int OpenCVVideoGrabberInterface::GetCameraIndex()
   return this->m_CameraIndex;
 }
 
+void OpenCVVideoGrabberInterface::ReadImageInformation()
+{
+
+}
+
 //
-// CanReadCamera
+// Checks if we can read a given camera
 //
 bool OpenCVVideoGrabberInterface::CanReadGrabber( unsigned long cameraID )
 {
@@ -187,6 +192,8 @@ bool OpenCVVideoGrabberInterface::GrabSingleFrame(void *buffer)
   void* tempBuffer = reinterpret_cast<void*>(this->m_CVImage->imageData);
   size_t bufferSize = this->m_CVImage->imageSize;
   memcpy(buffer, tempBuffer, bufferSize);
+
+  return true;
 }
 
 
@@ -277,6 +284,8 @@ bool OpenCVVideoGrabberInterface::OpenGrabber(int index)
       {
       itkExceptionMacro("OpenCV video grabber failed to open");
       }
+
+    return true;
 }
 
 bool OpenCVVideoGrabberInterface::CloseGrabber()

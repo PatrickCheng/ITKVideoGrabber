@@ -8,8 +8,8 @@ itk_module(Video-Grabber-OpenCV
    Video-Filters-Common
    Video-IO-Base
    Video-IO-OpenCV
-   ITK-TestKernel
    Video-Grabber-Base
+   TEST_DEPENDS ITK-TestKernel
    
    DESCRIPTION
      "${DOCUMENTATION}"

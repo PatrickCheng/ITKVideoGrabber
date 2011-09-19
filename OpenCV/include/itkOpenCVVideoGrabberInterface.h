@@ -55,7 +55,7 @@ public:
   itkTypeMacro(OpenCVVideoGrabberInterface, Superclass);
 
   /** Establish connection and opens the active frame grabber
-  * it it is not already open */
+  * if it is not already open */
   virtual bool OpenGrabber(int index);
 
   /** Disconnect the active frame grabber */
@@ -73,7 +73,7 @@ public:
   /** Return whether or not we can read from a given grabber */
   virtual bool CanReadGrabber( unsigned long grabberID );
 
-  /** Set the spacing and dimension information for the set filename. */
+  /** Reads image information from the grabbing device. */
   virtual void ReadImageInformation();
 
   /** Accessor functions for video specific information */

@@ -1,33 +1,41 @@
 itk_module_test()
-set(Video-Grabber-OpenCVTests
-  itkOpenCVVideoGrabberTest.cxx
-  itkOpenCVVideoGrabberFactoryTest.cxx
+
+set(ITKVideoGrabberTests
+    VideoGrabberOpenCVTest1.cxx
+    VideoGrabberOpenCVTest2.cxx
+    VideoGrabberOpenCVTest3.cxx
+    VideoGrabberOpenCVTest4.cxx
+    VideoGrabberOpenCVTest5.cxx
+    VideoGrabberOpenCVTest6.cxx
 )
+
 find_package ( OpenCV REQUIRED )
-CreateTestDriver(Video-Grabber-OpenCV  "${Video-Grabber-OpenCV-Test_LIBRARIES}" "${Video-Grabber-OpenCVTests}")
 
-# OpenCVVideoGrabber:
-add_video_test(NAME OpenCVVideoGrabberTest
-               COMMAND Video-Grabber-OpenCVTestDriver itkOpenCVVideoGrabberTest
-               # Video Input:
-               MIDAS{inde-circulation.avi.md5}
-               # Non-Video Input:
-               ${ITKVideo_Data_DIR}/Input/TestParameters.txt
-               # Output:
-               ${ITK_TEST_OUTPUT_DIR}/OpenCVVideoGrabberTest_Out.avi
-               # Webcam Output:
-               ${ITK_TEST_OUTPUT_DIR}/OpenCVVideoGrabberTest_CameraOut.mha
-               # Width Height NumFrames FpS
-               320 240 1396 14.985
-               )
+link_directories(${OpenCV_DIR}/3rdparty/lib/Debug)
+link_directories(${OpenCV_DIR}/3rdparty/lib/Release)
+link_directories(${OpenCV_LIB_DIR}/Debug)
+link_directories(${OpenCV_LIB_DIR}/Release)
 
-# OpenCVVideoGrabberFactory:
-add_video_test(NAME OpenCVVideoGrabberFactoryTest
-               COMMAND Video-Grabber-OpenCVTestDriver itkOpenCVVideoGrabberFactoryTest
-               # Video Input:
-               MIDAS{inde-circulation.avi.md5}
-               # Output:
-               ${ITK_TEST_OUTPUT_DIR}/OpenCVVideoGrabberTest_Out.avi
-               # Webcam Number:
-               0
-               )
+set(ITKVideoGrabber-Test_LIBRARIES ${ITKVideoGrabber_LIBRARIES} ${OpenCV_LIBS})
+
+CreateTestDriver(ITKVideoGrabber "${ITKVideoGrabber-Test_LIBRARIES}" "${ITKVideoGrabberTests}")
+
+set(TEST_DATA_ROOT "${ITKVideoGrabber_SOURCE_DIR}/Data")
+set(TEMP ${ITK_TEST_OUTPUT_DIR})
+
+itk_add_test( NAME VideoGrabberOpenCVTest1
+  COMMAND ITKVideoGrabberTestDriver VideoGrabberOpenCVTest1 )
+itk_add_test( NAME VideoGrabberOpenCVTest2
+  COMMAND ITKVideoGrabberTestDriver VideoGrabberOpenCVTest2 )
+itk_add_test( NAME VideoGrabberOpenCVTest3
+  COMMAND ITKVideoGrabberTestDriver VideoGrabberOpenCVTest3 )
+itk_add_test( NAME VideoGrabberOpenCVTest4
+  COMMAND ITKVideoGrabberTestDriver VideoGrabberOpenCVTest4 )
+itk_add_test( NAME VideoGrabberOpenCVTest5
+  COMMAND ITKVideoGrabberTestDriver VideoGrabberOpenCVTest5 )
+itk_add_test( NAME VideoGrabberOpenCVTest6
+  COMMAND ITKVideoGrabberTestDriver VideoGrabberOpenCVTest6 )
+
+
+
+

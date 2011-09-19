@@ -97,7 +97,17 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(VideoGrabberInterfaceBase, Superclass);
+/*
+  bool CanReadFile(const char *) { return true; };
 
+  bool CanWriteFile(const char *) { return true; };
+
+  void Read(void *buffer) {};
+
+  void Write(const void *buffer) {};
+
+  void WriteImageInformation();
+*/
   /** Establish connection and opens the active frame grabber */
   virtual bool OpenGrabber(int index) = 0;
 

@@ -17,7 +17,7 @@
 #ifndef __itkVideoGrabberInterfaceFactory_h
 #define __itkVideoGrabberInterfaceFactory_h
 
-#include "itkObject.h"
+#include "itkObjectFactoryBase.h"
 #include "itkVideoGrabberInterfaceBase.h"
 
 
@@ -27,13 +27,13 @@ namespace itk
 /** \class VideoGrabberInterfaceFactory
  * \brief Create instances of VideoGrabberInterface objects using an object factory.
  *
- * This class will create a VideoGrabberInterface instance that can acquire video from the
- * desired camera. In order for a specific VideoGrabberInterface type to be
+ * This class will create a VideoGrabberInterfaceBase instance that can acquire video from the
+ * desired camera. In order for a specific VideoGrabberInterfaceBase type to be
  * considered, it must be registered with the ITK ObjectFactoryBase.
  *
  * \ingroup Video-IO-Base
  */
-class ITK_EXPORT VideoGrabberInterfaceFactory:public Object
+class ITK_EXPORT VideoGrabberInterfaceFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -46,7 +46,7 @@ public:
   typedef enum { ReadFileMode, ReadCameraMode, WriteMode } IOModeType;
 
   /** Runtime type information (and related methods). **/
-  itkTypeMacro(VideoGrabberInterfaceFactory, Object);
+  itkTypeMacro(VideoGrabberInterfaceFactory, ObjectFactoryBase);
 
   /** Create the appropriate ImageIO depending on the particulars of the file.
    *  Note: arg can either be a path for reading/writing from/to a file or a
