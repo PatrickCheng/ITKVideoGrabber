@@ -108,6 +108,9 @@ public:
 
   void WriteImageInformation();
 */
+
+  virtual int GetDimensions(int i);
+
   /** Establish connection and opens the active frame grabber */
   virtual bool OpenGrabber(int index) = 0;
 

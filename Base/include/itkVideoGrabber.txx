@@ -35,7 +35,7 @@ VideoGrabber< TOutputVideoStream >
 {
   // Initialize members
   m_FileName = "";
-  m_VideoGrabber = NULL;
+  m_VideoGrabberInterface = NULL;
   m_PixelConversionNeeded = false;
   m_IFrameSafe = true;
 
@@ -66,7 +66,7 @@ VideoGrabber< TOutputVideoStream >
   Superclass::PrintSelf(os, indent);
 
   os << indent << "FileName: " << m_FileName << std::endl;
-  if (m_VideoGrabber)
+  if (m_VideoGrabberInterface)
     {
     std::cout << indent << "VideoGrabber:" << std::endl;
     m_VideoGrabber->Print(os, indent.GetNextIndent());
@@ -86,15 +86,15 @@ VideoGrabber< TOutputVideoStream >
   //
   // Use the VideoGrabberFactory to generate a VideoGrabberBase if needed
   //
-  if (m_VideoGrabber.IsNull())
+  if (m_VideoGrabberInterface.IsNull())
     {
     this->InitializeVideoGrabber();
     }
 
   //
-  // Check that the desired dimension mateches that read from the file
+  // Check that the desired dimension matches that exposed by the frame grabber
   //
-  if (m_VideoGrabber->GetNumberOfDimensions() != FrameType::ImageDimension)
+  if (m_VideoGrabberInterface->GetNumberOfDimensions() != FrameType::ImageDimension)
     {
     itkExceptionMacro("Output dimension doesn't match dimension of read data");
     }
@@ -106,11 +106,11 @@ VideoGrabber< TOutputVideoStream >
   largestPossibleTemporalRegion.SetFrameStart(0);
   if (m_IFrameSafe)
     {
-    largestPossibleTemporalRegion.SetFrameDuration(m_VideoGrabber->GetLastIFrame()+1);
+    largestPossibleTemporalRegion.SetFrameDuration(m_VideoGrabberInterface->GetLastIFrame()+1);
     }
   else
     {
-    largestPossibleTemporalRegion.SetFrameDuration(m_VideoGrabber->GetFrameTotal());
+    largestPossibleTemporalRegion.SetFrameDuration(m_VideoGrabberInterface->GetFrameTotal());
     }
   this->GetOutput()->SetLargestPossibleTemporalRegion(largestPossibleTemporalRegion);
 
@@ -127,12 +127,12 @@ VideoGrabber< TOutputVideoStream >
   typename FrameType::DirectionType direction;
   for (unsigned int i = 0; i < FrameType::ImageDimension; ++i)
     {
-    size[i] = m_VideoGrabber->GetDimensions(i);
-    origin[i] = m_VideoGrabber->GetOrigin(i);
-    spacing[i] = m_VideoGrabber->GetSpacing(i);
+    size[i] = m_VideoGrabberInterface->GetDimensions(i);
+    origin[i] = m_VideoGrabberInterface->GetOrigin(i);
+    spacing[i] = m_VideoGrabberInterface->GetSpacing(i);
     for (unsigned int j = 0; j < FrameType::ImageDimension; ++j)
       {
-      direction[j][i] = m_VideoGrabber->GetDirection(i)[j];
+      direction[j][i] = m_VideoGrabberInterface->GetDirection(i)[j];
       }
     }
   start.Fill(0);
@@ -155,11 +155,11 @@ unsigned long
 VideoGrabber< TOutputVideoStream >
 ::GetCurrentPositionFrame()
 {
-  if(m_VideoGrabber.IsNull())
+  if(m_VideoGrabberInterface.IsNull())
     {
     this->InitializeVideoGrabber();
     }
-  return m_VideoGrabber->GetCurrentFrame();
+  return m_VideoGrabberInterface->GetCurrentFrame();
 }
 
 
@@ -171,11 +171,11 @@ double
 VideoGrabber< TOutputVideoStream >
 ::GetCurrentPositionRatio()
 {
-  if(m_VideoGrabber.IsNull())
+  if(m_VideoGrabberInterface.IsNull())
     {
     this->InitializeVideoGrabber();
     }
-  return m_VideoGrabber->GetRatio();
+  return m_VideoGrabberInterface->GetRatio();
 }
 
 
@@ -187,11 +187,11 @@ double
 VideoGrabber< TOutputVideoStream >
 ::GetCurrentPositionMSec()
 {
-  if(m_VideoGrabber.IsNull())
+  if(m_VideoGrabberInterface.IsNull())
     {
     this->InitializeVideoGrabber();
     }
-  return m_VideoGrabber->GetPositionInMSec();
+  return m_VideoGrabberInterface->GetPositionInMSec();
 }
 
 
@@ -203,11 +203,11 @@ unsigned long
 VideoGrabber< TOutputVideoStream >
 ::GetNumberOfFrames()
 {
-  if(m_VideoGrabber.IsNull())
+  if(m_VideoGrabberInterface.IsNull())
     {
     this->InitializeVideoGrabber();
     }
-  return m_VideoGrabber->GetFrameTotal();
+  return m_VideoGrabberInterface->GetFrameTotal();
 }
 
 
@@ -219,11 +219,11 @@ double
 VideoGrabber< TOutputVideoStream >
 ::GetFpS()
 {
-  if(m_VideoGrabber.IsNull())
+  if(m_VideoGrabberInterface.IsNull())
     {
     this->InitializeVideoGrabber();
     }
-  return m_VideoGrabber->GetFpS();
+  return m_VideoGrabberInterface->GetFpS();
 }
 
 
@@ -237,7 +237,7 @@ void
 VideoGrabber< TOutputVideoStream >
 ::InitializeVideoGrabber()
 {
-  m_VideoGrabber = itk::VideoGrabberFactory::CreateVideoGrabber(
+  m_VideoGrabberInterface = itk::VideoGrabberFactory::CreateVideoGrabber(
                                 itk::VideoGrabberFactory::ReadFileMode,
                                 m_FileName.c_str());
   m_VideoGrabber->SetFileName(m_FileName.c_str());

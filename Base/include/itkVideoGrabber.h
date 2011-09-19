@@ -27,7 +27,7 @@ namespace itk
 {
 
 /** \class VideoGrabber
- * \brief Grabber captures VideoStream from devices
+ * \brief Grabber captures a VideoStream from devices
  *
  * This class is responsible for reading video information from frame grabbers. It is a
  * subclass of VideoSource, giving it functionality to connect to other
@@ -38,16 +38,16 @@ namespace itk
  *
  * \ingroup Video-Grabber
  */
-template< class TOutputVideoStream >
-class ITK_EXPORT VideoGrabber:public VideoSource< TOutputVideoStream >
+template< class TVideoStream >
+class ITK_EXPORT VideoGrabber:public VideoSource< TVideoStream >
 {
 public:
 
   /**-TYPEDEFS---------------------------------------------------------------*/
   typedef VideoGrabber                      Self;
-  typedef VideoSource< TOutputVideoStream > Superclass;
+  typedef VideoSource< TVideoStream > Superclass;
   typedef SmartPointer<Self>                Pointer;
-  typedef TOutputVideoStream                VideoStreamType;
+  typedef TVideoStream                VideoStreamType;
 
   typedef typename VideoStreamType::FrameType FrameType;
   typedef typename FrameType::PixelType       PixelType;
@@ -64,8 +64,8 @@ public:
   /**-PUBLIC METHODS---------------------------------------------------------*/
 
   /** Specify the file to read. This is forwarded to the IO instance. */
-  itkSetMacro(int DeviceNumber);
-  itkGetMacro(int DeviceNumber);
+  itkSetMacro(DeviceNumber, int);
+  itkGetMacro(DeviceNumber, int);
 
   /** Get/Set IFrameSafe. If true, the last IFrame will be reported as the last
    * frame for the largest possible temporal region */
@@ -75,9 +75,9 @@ public:
   /** Set up the output information */
   virtual void UpdateOutputInformation();
 
-  /** Set the internal VideoGrabberBase pointer. This will generally be called by
+  /** Set the internal VideoGrabberInterfaceBase pointer. This will generally be called by
    * the object that creates the RingBuffer (e.g. itk::VideoGrabber) */
-  void SetVideoGrabber(VideoGrabberBase* videoGrabber);
+  void SetVideoGrabberInterface(VideoGrabberInterfaceBase*);
 
 
   /** Get the current position as frame, ratio, or MSec */
@@ -116,7 +116,7 @@ protected:
   int m_DeviceNumber;
 
   /** VideoGrabberInterfaceBase used to acquire video */
-  VideoGrabberInterfaceBase::Pointer m_VideoGrabber;
+  VideoGrabberInterfaceBase::Pointer m_VideoGrabberInterface;
 
   /** Flag to store whether or not the pixel type needs to be converted */
   bool m_PixelConversionNeeded;

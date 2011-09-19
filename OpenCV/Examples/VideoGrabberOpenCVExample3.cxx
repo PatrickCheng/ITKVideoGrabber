@@ -21,8 +21,14 @@
 #include <stdio.h>
 
 #include <itkVideoStream.h>
+#include <itkVideoGrabber.h>
 #include <itkOpenCVVideoGrabberInterfaceFactory.h>
 #include <itkOpenCVVideoGrabberInterface.h>
+
+typedef itk::RGBPixel<unsigned char>              RGBPixelType;
+typedef itk::Image<RGBPixelType, 2>               RGBFrameType;
+typedef itk::VideoStream<RGBFrameType>            RGBVideoStreamType;
+typedef itk::VideoGrabber<RGBVideoStreamType >    VideoGrabberType;
 
 /*
  * This example performs basic video grabbing from the default device
@@ -30,16 +36,17 @@
  */
 int main ( int argc, char **argv )
 {
-   itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterfaceFactory::New() );
+   VideoGrabberType::Pointer grabber = VideoGrabberType::New();
+  // itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterfaceFactory::New() );
 
-   itk::OpenCVVideoGrabberInterface::Pointer grabber = itk::OpenCVVideoGrabberInterface::New();
-
+//   itk::OpenCVVideoGrabberInterface::Pointer grabber = itk::OpenCVVideoGrabberInterface::New();
+/*
    if (!grabber->OpenGrabber(0))
    {
       std::cerr << "Could not open default grabber device" << std::endl;
       return EXIT_FAILURE;
    }
 //   grabber->GrabSingleFrame();
-
+*/
    return EXIT_SUCCESS;
 }
