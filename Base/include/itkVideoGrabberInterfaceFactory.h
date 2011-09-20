@@ -42,20 +42,13 @@ public:
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
-  /** Mode in which the VideoGrabber is intended to be used */
-  typedef enum { ReadFileMode, ReadCameraMode, WriteMode } IOModeType;
-
   /** Runtime type information (and related methods). **/
   itkTypeMacro(VideoGrabberInterfaceFactory, ObjectFactoryBase);
 
-  /** Create the appropriate ImageIO depending on the particulars of the file.
-   *  Note: arg can either be a path for reading/writing from/to a file or a
-   *        a string containing an integer to use for a cameraID if reading
-   *        from a camera
-   */
-  static VideoGrabberInterfaceBase::Pointer CreateVideoGrabber( IOModeType mode, const char* arg );
+  /** Create the a video grabber interface for a given cameraID  */
+  static VideoGrabberInterfaceBase::Pointer CreateVideoGrabber( int cameraID );
 
-  /** Register Builtin factories **/
+  /** Register builtin factories **/
   static void RegisterBuiltInFactories();
 
 protected:

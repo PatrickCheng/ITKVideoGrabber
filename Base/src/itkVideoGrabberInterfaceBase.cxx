@@ -28,4 +28,103 @@ void VideoGrabberInterfaceBase::PrintSelf(std::ostream & os, Indent indent) cons
   Superclass::PrintSelf(os,indent);
 }
 
+void VideoGrabberInterfaceBase::SetDimensions(unsigned int i, unsigned int dim)
+{
+  if ( i >= m_Dimensions.size() )
+    {
+    itkWarningMacro( "Index: " << i
+                               << " is out of bounds, expected maximum is "
+                               << m_Dimensions.size() );
+    itkExceptionMacro( "Index: " << i
+                                 << " is out of bounds, expected maximum is "
+                                 << m_Dimensions.size() );
+    }
+  this->Modified();
+  m_Dimensions[i] = dim;
+}
+
+void VideoGrabberInterfaceBase::SetOrigin(unsigned int i, double origin)
+{
+  if ( i >= m_Origin.size() )
+    {
+    itkWarningMacro( "Index: " << i
+                               << " is out of bounds, expected maximum is "
+                               << m_Origin.size() );
+    itkExceptionMacro( "Index: " << i
+                                 << " is out of bounds, expected maximum is "
+                                 << m_Origin.size() );
+    }
+  this->Modified();
+  m_Origin[i] = origin;
+}
+
+void VideoGrabberInterfaceBase::SetSpacing(unsigned int i, double spacing)
+{
+  if ( i >= m_Spacing.size() )
+    {
+    itkWarningMacro( "Index: " << i
+                               << " is out of bounds, expected maximum is "
+                               << m_Spacing.size() );
+    itkExceptionMacro( "Index: " << i
+                                 << " is out of bounds, expected maximum is "
+                                 << m_Spacing.size() );
+    }
+  this->Modified();
+  m_Spacing[i] = spacing;
+}
+
+void VideoGrabberInterfaceBase::SetDirection(unsigned int i, std::vector< double > & direction)
+{
+  if ( i >= m_Direction.size() )
+    {
+    itkWarningMacro( "Index: " << i
+                               << " is out of bounds, expected maximum is "
+                               << m_Direction.size() );
+    itkExceptionMacro( "Index: " << i
+                                 << " is out of bounds, expected maximum is "
+                                 << m_Direction.size() );
+    }
+  this->Modified();
+  m_Direction[i] = direction;
+}
+
+void VideoGrabberInterfaceBase::SetDirection(unsigned int i, vnl_vector< double > & direction)
+{
+  if ( i >= m_Direction.size() )
+    {
+    itkWarningMacro( "Index: " << i
+                               << " is out of bounds, expected maximum is "
+                               << m_Direction.size() );
+    itkExceptionMacro( "Index: " << i
+                                 << " is out of bounds, expected maximum is "
+                                 << m_Direction.size() );
+    }
+  this->Modified();
+  std::vector< double > v;
+  v.resize( m_Direction.size() );
+  for ( unsigned int j = 0; j < v.size(); j++ )
+    {
+    v[j] = direction[j];
+    }
+  m_Direction[i] = v;
+}
+
+/** Return the default directions. */
+std::vector< double >
+VideoGrabberInterfaceBase::GetDefaultDirection(unsigned int k) const
+{
+  std::vector< double > axis;
+  axis.resize( this->GetNumberOfDimensions() );
+
+  // Fill up with the equivalent of a line from an Identity matrix
+  for ( unsigned int r = 0; r < axis.size(); r++ )
+    {
+    axis[r] = 0.0;
+    }
+
+  axis[k] = 1.0;
+
+  return axis;
+}
+
 }; //namespace itk end

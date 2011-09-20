@@ -113,8 +113,6 @@ unsigned long OpenCVVideoGrabberInterface::GetLastIFrame()
   return this->m_LastIFrame;
 }
 
-
-
 //
 // SetCameraIndex
 //

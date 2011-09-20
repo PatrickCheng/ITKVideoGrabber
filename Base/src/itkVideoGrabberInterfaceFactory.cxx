@@ -33,7 +33,7 @@
 namespace itk
 {
 
-VideoGrabberInterfaceBase::Pointer VideoGrabberInterfaceFactory::CreateVideoGrabber( IOModeType mode, const char* arg )
+VideoGrabberInterfaceBase::Pointer VideoGrabberInterfaceFactory::CreateVideoGrabber( int cameraID )
 {
   RegisterBuiltInFactories();
 
@@ -60,11 +60,10 @@ VideoGrabberInterfaceBase::Pointer VideoGrabberInterfaceFactory::CreateVideoGrab
         j != possibleVideoGrabber.end() ; ++j )
     {
     
-      if ((*j)->CanReadGrabber(atoi(arg)))
+      if ((*j)->CanReadGrabber(cameraID))
         {
         return *j;
         }
-    
     }
 
   // Didn't find a usable VideoGrabberInterface

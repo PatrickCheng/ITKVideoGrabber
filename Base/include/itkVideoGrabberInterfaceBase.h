@@ -44,48 +44,48 @@ class ITK_EXPORT VideoGrabberInterfaceBase: public LightProcessObject
 {
 public:
 
-     // enums
-     enum VideoMode
-     {
-         e320x240,
-         e640x480,
-         e800x600,
-         e768x576,
-         e1024x768,
-         e1280x960,
-         e1600x1200,
-         eNone
-     };
+  // enums
+  enum VideoMode
+  {
+     e320x240,
+     e640x480,
+     e800x600,
+     e768x576,
+     e1024x768,
+     e1280x960,
+     e1600x1200,
+     eNone
+  };
 
-     enum ColorMode
-     {
-         eRGB24,
-         eBayerPatternToRGB24,
-         eGrayScale,
-         eYUV411ToRGB24
-     };
+  enum ColorMode
+  {
+     eRGB24,
+     eBayerPatternToRGB24,
+     eGrayScale,
+     eYUV411ToRGB24
+  };
 
-     enum FrameRate
-     {
-         e60fps,
-         e30fps,
-         e15fps,
-         e7_5fps,
-         e3_75fps,
-         e1_875fps
-     };
+  enum FrameRate
+  {
+     e60fps,
+     e30fps,
+     e15fps,
+     e7_5fps,
+     e3_75fps,
+     e1_875fps
+  };
 
-     /** Enums used to manipulate the pixel type. The pixel type provides
-        * context for automatic data conversions (for instance, RGB to
-        * SCALAR, VECTOR to SCALAR). */
-       typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
+  /** Enums used to manipulate the pixel type. The pixel type provides
+    * context for automatic data conversions (for instance, RGB to
+    * SCALAR, VECTOR to SCALAR). */
+   typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
 
-       /** Enums used to manipulate the component type. The component type
-          * refers to the actual storage class associated with either a
-          * SCALAR pixel type or elements of a compound pixel.
-          */
-         typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
-                         ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
+   /** Enums used to manipulate the component type. The component type
+      * refers to the actual storage class associated with either a
+      * SCALAR pixel type or elements of a compound pixel.
+      */
+     typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
+                     ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
 
 public:
 
@@ -97,19 +97,8 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(VideoGrabberInterfaceBase, Superclass);
-/*
-  bool CanReadFile(const char *) { return true; };
 
-  bool CanWriteFile(const char *) { return true; };
 
-  void Read(void *buffer) {};
-
-  void Write(const void *buffer) {};
-
-  void WriteImageInformation();
-*/
-
-  virtual int GetDimensions(int i);
 
   /** Establish connection and opens the active frame grabber */
   virtual bool OpenGrabber(int index) = 0;
@@ -137,6 +126,53 @@ public:
   virtual unsigned long GetCurrentFrame() = 0;
   virtual unsigned long GetLastIFrame() = 0;
 
+  /** Set/Get the number of independent variables (dimensions) in the
+     * image being read or written. Note this is not necessarily what
+     * is written, rather the IORegion controls that. */
+    void SetNumberOfDimensions(unsigned int);
+
+    itkGetConstMacro(NumberOfDimensions, unsigned int);
+
+    /** Set/Get the image dimensions in the x, y, z, etc. directions.
+     * GetDimensions() is typically used after reading the data; the
+     * SetDimensions() is used prior to writing the data. */
+    virtual void SetDimensions(unsigned int i, unsigned int dim);
+
+    virtual unsigned int GetDimensions(unsigned int i) const
+    { return m_Dimensions[i]; }
+
+    /** Set/Get the image origin on a axis-by-axis basis. The SetOrigin() method
+     * is required when writing the image. */
+    virtual void SetOrigin(unsigned int i, double origin);
+
+    virtual double GetOrigin(unsigned int i) const
+    {
+      return m_Origin[i];
+    }
+
+    /** Set/Get the image spacing on an axis-by-axis basis. The
+     * SetSpacing() method is required when writing the image. */
+    virtual void SetSpacing(unsigned int i, double spacing);
+
+    virtual double GetSpacing(unsigned int i) const
+    {
+      return m_Spacing[i];
+    }
+
+    /** Set/Get the image direction on an axis-by-axis basis. The
+     * SetDirection() method is required when writing the image. */
+    virtual void SetDirection(unsigned int i, std::vector< double > & direction);
+
+    virtual void SetDirection(unsigned int i, vnl_vector< double > & direction);
+
+    virtual std::vector< double > GetDirection(unsigned int i) const
+    {
+      return m_Direction[i];
+    }
+
+    /** Return the directions to be assigned by default to recipient
+     *  images whose dimension is smaller than the image dimension in file.  */
+    virtual std::vector< double > GetDefaultDirection(unsigned int i) const;
 
 protected:
   VideoGrabberInterfaceBase(){};
@@ -174,6 +210,9 @@ protected:
    /** Stores the number of components per pixel. This will be 1 for
       * grayscale images, 3 for RGBPixel images, and 4 for RGBPixelA images. */
    unsigned int m_NumberOfComponents;
+
+   /** The number of independent dimensions in the image. */
+   unsigned int m_NumberOfDimensions;
 
    /** Used internally to keep track of the type of the pixel. */
    VideoFramePixelType m_PixelType;

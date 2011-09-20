@@ -106,11 +106,9 @@ protected:
   /** Convert buffer for output */
   void DoConvertBuffer(void* inputData, unsigned long frameNumber);
 
-  /** Set up the VideoGrabber using VideoGrabberFactory
+  /** Set up the VideoGrabber using VideoGrabberInterfaceFactory
    * Warning: this will overwrite any currently set VideoGrabber */
   void InitializeVideoGrabber();
-
-  /**-PROTECTED MEMBERS------------------------------------------------------*/
 
   /** The device ID to open */
   int m_DeviceNumber;
