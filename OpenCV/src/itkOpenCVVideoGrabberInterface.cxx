@@ -152,11 +152,10 @@ bool OpenCVVideoGrabberInterface::CanReadGrabber( unsigned long cameraID )
 }
 
 //
-// Read
+// Grabs a single frame from the current camera. Updates grabber properties
 //
 bool OpenCVVideoGrabberInterface::GrabSingleFrame(void *buffer)
 {
-
   // If grabber is not already open, open it and keep it open
   if (!this->m_GrabberIsOpen)
     {
@@ -166,13 +165,13 @@ bool OpenCVVideoGrabberInterface::GrabSingleFrame(void *buffer)
   // Read the desired frame
   //
   // Note: This will advance to the next frame in the stream, so SetNextFrameToRead
-  //       doesn't need to be called before Read is called again unless you want to
+  //       doesn't need to be called before GrabSingleFrame is called again unless you want to
   //       skip to a different location. Be warned, though. SetNextFrameToRead can
   //       only skip to I-Frames, so there can be unexpected behavior
   IplImage* tempIm = cvQueryFrame(this->m_Capture);
   if (tempIm == NULL)
     {
-    itkExceptionMacro(<< "Error reading frame " << this->m_CurrentFrame << ". May be out of bounds");
+    itkExceptionMacro(<< "Error reading frame " << this->m_CurrentFrame);
     }
 
   // Convert to RGB rather than BGR

@@ -127,4 +127,61 @@ VideoGrabberInterfaceBase::GetDefaultDirection(unsigned int k) const
   return axis;
 }
 
+// Calculates the image size in bytes
+VideoGrabberInterfaceBase::SizeType
+VideoGrabberInterfaceBase
+::GetImageSizeInBytes() const
+{
+  return ( this->GetImageSizeInComponents() * this->GetComponentSize() );
+}
+
+// Calculates the image size in pixels
+VideoGrabberInterfaceBase::SizeType
+VideoGrabberInterfaceBase
+::GetImageSizeInPixels() const
+{
+  unsigned int i;
+  SizeType numPixels = 1;
+
+  for ( i = 0; i < m_NumberOfDimensions; i++ )
+    {
+    numPixels *= m_Dimensions[i];
+    }
+
+  return numPixels;
+}
+
+unsigned int VideoGrabberInterfaceBase::GetComponentSize() const
+{
+  switch ( m_ComponentType )
+    {
+    case UCHAR:
+      return sizeof( unsigned char );
+    case CHAR:
+      return sizeof( char );
+    case USHORT:
+      return sizeof( unsigned short );
+    case SHORT:
+      return sizeof( short );
+    case UINT:
+      return sizeof( unsigned int );
+    case INT:
+      return sizeof( int );
+    case ULONG:
+      return sizeof( unsigned long );
+    case LONG:
+      return sizeof( long );
+    case FLOAT:
+      return sizeof( float );
+    case DOUBLE:
+      return sizeof( double );
+    case UNKNOWNCOMPONENTTYPE:
+    default:
+      itkExceptionMacro ("Unknown component type: " << m_ComponentType);
+    }
+
+  return 0;
+}
+
+
 }; //namespace itk end

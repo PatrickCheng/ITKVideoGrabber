@@ -98,7 +98,8 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(VideoGrabberInterfaceBase, Superclass);
 
-
+  /** Type for representing size of bytes, and or positions along a file */
+  typedef std::streamoff SizeType;
 
   /** Establish connection and opens the active frame grabber */
   virtual bool OpenGrabber(int index) = 0;
@@ -174,6 +175,22 @@ public:
      *  images whose dimension is smaller than the image dimension in file.  */
     virtual std::vector< double > GetDefaultDirection(unsigned int i) const;
 
+   /** Return the number of pixels in the image. */
+   SizeType GetImageSizeInPixels() const;
+
+   /** Return the number of bytes in the image. */
+   SizeType GetImageSizeInBytes() const;
+
+   /** Return the number of pixels times the number
+   * of components in the image. */
+   SizeType GetImageSizeInComponents() const;
+
+   /** Compute the size (in bytes) of the components of a pixel. For
+   * example, an RGB pixel of unsigned char would have a
+   * component size of 1 byte. This method can be invoked only after
+   * the component type is set. */
+  virtual unsigned int GetComponentSize() const;
+
 protected:
   VideoGrabberInterfaceBase(){};
   ~VideoGrabberInterfaceBase(){};
@@ -215,7 +232,7 @@ protected:
    unsigned int m_NumberOfDimensions;
 
    /** Used internally to keep track of the type of the pixel. */
-   VideoFramePixelType m_PixelType;
+   VideoFramePixelType m_PixelType;  
 
 private:
   VideoGrabberInterfaceBase(const Self &);    //purposely not implemented

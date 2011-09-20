@@ -67,7 +67,7 @@ VideoGrabber< TOutputVideoStream >
   if (m_VideoGrabberInterface)
     {
     std::cout << indent << "VideoGrabber:" << std::endl;
-    m_VideoGrabber->Print(os, indent.GetNextIndent());
+    m_VideoGrabberInterface->Print(os, indent.GetNextIndent());
     }
 }
 
@@ -303,7 +303,7 @@ VideoGrabber< TOutputVideoStream >
     char* loadBuffer = new char[bufferSize];
 
     // Read into a temporary buffer
-    m_VideoGrabberInterface->Read(static_cast<void*>(loadBuffer));
+    m_VideoGrabberInterface->GrabSingleFrame(static_cast<void*>(loadBuffer));
 
     // Convert the buffer into the output buffer location
     this->DoConvertBuffer(static_cast<void*>(loadBuffer), frameNum);
@@ -311,7 +311,7 @@ VideoGrabber< TOutputVideoStream >
   else
     {
     FrameType* frame = this->GetOutput()->GetFrame(frameNum);
-    m_VideoGrabberInterface->Read(reinterpret_cast<void*>(frame->GetBufferPointer()));
+    m_VideoGrabberInterface->GrabSingleFrame(reinterpret_cast<void*>(frame->GetBufferPointer()));
     }
 
   // Mark ourselves modified
