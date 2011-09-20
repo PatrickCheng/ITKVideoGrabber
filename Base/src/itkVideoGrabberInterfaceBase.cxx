@@ -151,6 +151,13 @@ VideoGrabberInterfaceBase
   return numPixels;
 }
 
+VideoGrabberInterfaceBase::SizeType
+VideoGrabberInterfaceBase
+::GetImageSizeInComponents() const
+{
+  return ( this->GetImageSizeInPixels() * m_NumberOfComponents );
+}
+
 unsigned int VideoGrabberInterfaceBase::GetComponentSize() const
 {
   switch ( m_ComponentType )

@@ -36,7 +36,31 @@ typedef itk::VideoGrabber<RGBVideoStreamType >    VideoGrabberType;
  */
 int main ( int argc, char **argv )
 {
-   VideoGrabberType::Pointer grabber = VideoGrabberType::New();
+
+    RGBVideoStreamType ::Pointer videoStream = RGBVideoStreamType::New();
+
+    // Set the buffered temporal region
+    RGBVideoStreamType::TemporalRegionType temporalRegion;
+    unsigned long startFrame = 0;
+    unsigned long numFrames = 5;
+    temporalRegion.SetFrameStart( startFrame );
+    temporalRegion.SetFrameDuration( numFrames );
+    videoStream->SetLargestPossibleTemporalRegion( temporalRegion );
+    videoStream->SetRequestedTemporalRegion( temporalRegion );
+    videoStream->SetBufferedTemporalRegion( temporalRegion );
+
+    // Initialize all frames in the buffered temporal region
+    videoStream->InitializeEmptyFrames();
+
+    // Set the buffered spatial region for each frame
+     FrameType::RegionType largestSpatialRegion = SetUpSpatialRegion(100, 100);
+     FrameType::RegionType requestedSpatialRegion = SetUpSpatialRegion(40, 40);
+     FrameType::RegionType bufferedSpatialRegion = SetUpSpatialRegion(50, 40);
+     videoStream->SetAllLargestPossibleSpatialRegions( largestSpatialRegion );
+     videoStream->SetAllRequestedSpatialRegions( requestedSpatialRegion );
+     videoStream->SetAllBufferedSpatialRegions( bufferedSpatialRegion );
+
+    VideoGrabberType::Pointer grabber = VideoGrabberType::New();
   // itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterfaceFactory::New() );
 
 //   itk::OpenCVVideoGrabberInterface::Pointer grabber = itk::OpenCVVideoGrabberInterface::New();
