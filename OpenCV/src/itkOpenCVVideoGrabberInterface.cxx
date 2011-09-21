@@ -129,9 +129,85 @@ int OpenCVVideoGrabberInterface::GetCameraIndex()
   return this->m_CameraIndex;
 }
 
+//
+// SetNextFrameToRead
+//
+bool OpenCVVideoGrabberInterface::SetNextFrameToRead(unsigned long frameNumber)
+{
+  // If the capture isn't open, open it
+  if (!this->m_GrabberIsOpen)
+    {
+    this->OpenGrabber(this->m_CameraIndex);
+    }
+
+  // Make sure we're not setting past the end
+  if (frameNumber > this->m_LastIFrame)
+    {
+    itkDebugMacro(<< "Warning: Trying to seek past end of video (past last I-Frame)");
+    return false;
+    }
+
+  if (this->m_Capture != NULL)
+    {
+    cvSetCaptureProperty(this->m_Capture,CV_CAP_PROP_POS_FRAMES, frameNumber);
+    this->UpdateGrabberProperties();
+    this->Modified();
+
+    return true;
+    }
+  return false;
+}
+
 void OpenCVVideoGrabberInterface::ReadImageInformation()
 {
+  // Set up a local capture and image
+  CvCapture* localCapture;
+  IplImage* tempImage;
 
+  // Open the camera capture
+  localCapture = cvCaptureFromCAM( this->m_CameraIndex );
+
+  // Make sure it opened right
+  if (!localCapture)
+    {
+    itkExceptionMacro(<< "Cannot read from camera " << this->m_CameraIndex);
+    }
+
+  // Query the frame and set the frame total to 1
+  tempImage = cvQueryFrame(localCapture);
+  this->m_FrameTotal = 1;
+
+  // Populate member variables
+  this->m_FpS = static_cast<double>
+  (cvGetCaptureProperty( localCapture, CV_CAP_PROP_FPS ));
+
+  // Set width, height
+  this->m_Dimensions.clear();
+  this->m_Dimensions.push_back( cvGetCaptureProperty( localCapture, CV_CAP_PROP_FRAME_WIDTH ) );
+  this->m_Dimensions.push_back( cvGetCaptureProperty( localCapture, CV_CAP_PROP_FRAME_HEIGHT ) );
+
+  this->m_NumberOfComponents = tempImage->nChannels;
+
+  // Set the pixel type
+  if (this->m_NumberOfComponents == 1)
+  {
+  this->m_PixelType = SCALAR;
+  }
+  else if (this->m_NumberOfComponents == 3)
+  {
+  this->m_PixelType = RGB;
+  }
+  else if (this->m_NumberOfComponents == 4)
+  {
+  this->m_PixelType = RGBA;
+  }
+  else
+  {
+  itkExceptionMacro("OpenCV IO only supports Mono, RGB, and RGBA input");
+  }
+
+  // Release the local capture and image
+  cvReleaseCapture(&localCapture);
 }
 
 //
@@ -206,9 +282,9 @@ void OpenCVVideoGrabberInterface::UpdateGrabberProperties()
   this->m_FpS = static_cast<double>
     (cvGetCaptureProperty( this->m_Capture, CV_CAP_PROP_FPS ));
   this->m_Ratio = 
-    cvGetCaptureProperty(this->m_Capture,CV_CAP_PROP_POS_AVI_RATIO);
+    cvGetCaptureProperty(this->m_Capture, CV_CAP_PROP_POS_AVI_RATIO);
   this->m_FourCC =
-    cvGetCaptureProperty(this->m_Capture,CV_CAP_PROP_FOURCC);
+    cvGetCaptureProperty(this->m_Capture, CV_CAP_PROP_FOURCC);
 }
 
 //
@@ -216,12 +292,13 @@ void OpenCVVideoGrabberInterface::UpdateGrabberProperties()
 //
 bool OpenCVVideoGrabberInterface::OpenGrabber(int index)
 {
-  this->m_CameraIndex = index;
 
   if (this->m_GrabberIsOpen)
     {
     itkExceptionMacro("Cannot open grabber if already open");
     }
+
+  this->m_CameraIndex = index;
 
   // Set up a local capture and image
     CvCapture* localCapture;

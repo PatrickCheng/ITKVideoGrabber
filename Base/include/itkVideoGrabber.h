@@ -39,11 +39,10 @@ namespace itk
  * \ingroup Video-Grabber
  */
 template< class TVideoStream >
-class ITK_EXPORT VideoGrabber:public VideoSource< TVideoStream >
+class ITK_EXPORT VideoGrabber : public VideoSource< TVideoStream >
 {
 public:
 
-  /**-TYPEDEFS---------------------------------------------------------------*/
   typedef VideoGrabber                      Self;
   typedef VideoSource< TVideoStream > Superclass;
   typedef SmartPointer<Self>                Pointer;
@@ -61,9 +60,8 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(VideoGrabber, VideoSource);
 
-  /**-PUBLIC METHODS---------------------------------------------------------*/
-
-  /** Specify the file to read. This is forwarded to the IO instance. */
+  /** Specify the device number to acquire from. This is forwarded to the
+   * VideoGrabberInterfaceBase instance. */
   itkSetMacro(DeviceNumber, int);
   itkGetMacro(DeviceNumber, int);
 
@@ -75,10 +73,8 @@ public:
   /** Set up the output information */
   virtual void UpdateOutputInformation();
 
-  /** Set the internal VideoGrabberInterfaceBase pointer. This will generally be called by
-   * the object that creates the RingBuffer (e.g. itk::VideoGrabber) */
+  /** Set the internal VideoGrabberInterfaceBase pointer */
   void SetVideoGrabberInterface(VideoGrabberInterfaceBase*);
-
 
   /** Get the current position as frame, ratio, or MSec */
   unsigned long GetCurrentPositionFrame();
@@ -93,9 +89,9 @@ public:
 
 protected:
 
-  /**-PROTECTED METHODS------------------------------------------------------*/
   VideoGrabber();
   virtual ~VideoGrabber();
+
   void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Override TemporalStreamingGenerateData to generate output a single frame.
@@ -106,8 +102,8 @@ protected:
   /** Convert buffer for output */
   void DoConvertBuffer(void* inputData, unsigned long frameNumber);
 
-  /** Set up the VideoGrabber using VideoGrabberInterfaceFactory
-   * Warning: this will overwrite any currently set VideoGrabber */
+  /** Set up a new VideoGrabberInterface using VideoGrabberInterfaceFactory
+   * Warning: this will overwrite any currently set VideoGrabberInterface */
   void InitializeVideoGrabber();
 
   /** The device ID to open */

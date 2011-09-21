@@ -24,8 +24,6 @@
 namespace itk
 {
 
-//-CONSTRUCTOR DESTRUCTOR PRINT------------------------------------------------
-
 //
 // Constructor
 //
@@ -34,7 +32,7 @@ VideoGrabber< TOutputVideoStream >
 ::VideoGrabber()
 {
   // Initialize members
-  m_VideoGrabberInterface = NULL;
+//  m_VideoGrabberInterface = NULL;
   m_PixelConversionNeeded = false;
   m_IFrameSafe = true;
 
@@ -64,9 +62,9 @@ VideoGrabber< TOutputVideoStream >
 {
   Superclass::PrintSelf(os, indent);
 
-  if (m_VideoGrabberInterface)
+  if (m_VideoGrabberInterface.IsNotNull())
     {
-    std::cout << indent << "VideoGrabber:" << std::endl;
+    std::cout << indent << "VideoGrabberInterface:" << std::endl;
     m_VideoGrabberInterface->Print(os, indent.GetNextIndent());
     }
 }
@@ -80,7 +78,7 @@ VideoGrabber< TOutputVideoStream >
 ::UpdateOutputInformation()
 {
   //
-  // Use the VideoGrabberFactory to generate a VideoGrabberBase if needed
+  // Generate a VideoGrabberInterfaceBase if needed
   //
   if (m_VideoGrabberInterface.IsNull())
     {
@@ -108,6 +106,7 @@ VideoGrabber< TOutputVideoStream >
     {
     largestPossibleTemporalRegion.SetFrameDuration(m_VideoGrabberInterface->GetFrameTotal());
     }
+    
   this->GetOutput()->SetLargestPossibleTemporalRegion(largestPossibleTemporalRegion);
 
   //
@@ -222,9 +221,6 @@ VideoGrabber< TOutputVideoStream >
   return m_VideoGrabberInterface->GetFpS();
 }
 
-
-//-PROTECTED METHODS-----------------------------------------------------------
-
 //
 // InitializeVideoGrabber
 //
@@ -235,7 +231,7 @@ VideoGrabber< TOutputVideoStream >
 {
 // todo: decide where to set the cameraID
   m_VideoGrabberInterface = itk::VideoGrabberInterfaceFactory::CreateVideoGrabber(0);
-//  m_VideoGrabberInterface->SetCameraIndex()
+  m_VideoGrabberInterface->SetCameraIndex(0);
   m_VideoGrabberInterface->ReadImageInformation();
 
   // Make sure the input video has the same number of dimensions as the desired
@@ -244,13 +240,13 @@ VideoGrabber< TOutputVideoStream >
   // Note: This may be changed with the implementation of the Image
   //       Interpretation Layer
   if (m_VideoGrabberInterface->GetNumberOfDimensions() != FrameType::ImageDimension)
-    {
-    itkExceptionMacro("Cannot convert " << m_VideoGrabberInterface->GetNumberOfDimensions() << "D "
-      "image set to " << FrameType::ImageDimension << "D");
-    }
+  	{
+	itkExceptionMacro("Cannot convert " << m_VideoGrabberInterface->GetNumberOfDimensions() << "D "
+	  "image set to " << FrameType::ImageDimension << "D");
+	}
 
   // See if a buffer conversion is needed
-  ImageIOBase::IOComponentType ioType = ImageIOBase
+  VideoGrabberInterfaceBase::IOComponentType ioType = VideoGrabberInterface
     ::MapPixelType< ITK_TYPENAME ConvertPixelTraits::ComponentType >::CType;
   if ( m_VideoGrabberInterface->GetComponentType() != ioType ||
        m_VideoGrabberInterface->GetNumberOfComponents() != ConvertPixelTraits::GetNumberOfComponents() )
@@ -333,8 +329,9 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
     this->GetOutput()->GetFrame(frameNumber)->GetPixelContainer()->Size();
   bool isVectorImage(strcmp(this->GetOutput()->GetFrame(frameNumber)->GetNameOfClass(),
                             "VectorImage") == 0);
+                            
 #define ITK_CONVERT_BUFFER_IF_BLOCK(_CType,type)                        \
-  else if(m_VideoGrabberInterface->GetComponentType() == _CType)                      \
+  else if(m_VideoGrabberInterface->GetComponentType() == _CType)        \
     {                                                                   \
     if (isVectorImage)                                                  \
       {                                                                 \
@@ -343,7 +340,7 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
                          ConvertPixelTraits                             \
                          >                                              \
         ::ConvertVectorImage(static_cast< type * >( inputData ),        \
-                             m_VideoGrabber->GetNumberOfComponents(),        \
+                             m_VideoGrabber->GetNumberOfComponents(),   \
                              outputData,                                \
                              numberOfPixels);                           \
       }                                                                 \
@@ -354,7 +351,7 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
                          ConvertPixelTraits                             \
                          >                                              \
         ::Convert(static_cast< type * >( inputData ),                   \
-                  m_VideoGrabber->GetNumberOfComponents(),                   \
+                  m_VideoGrabber->GetNumberOfComponents(),              \
                   outputData,                                           \
                   numberOfPixels);                                      \
       }                                                                 \

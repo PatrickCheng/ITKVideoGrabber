@@ -29,14 +29,14 @@ namespace itk
 /** \class VideoGrabberInterfaceBase
  * \brief Abstract superclass defines video grabber interface.
  *
- * VideoGrabberInterfaceBase is an abstract base class for ITK video grabber classes
+ * VideoGrabberInterfaceBase is an abstract base class for ITK video
+ * grabber interface classes
  *
  * A pluggable factory pattern is used. This allows different kinds of
  * frame grabbers to be registered (even at run time) without having to
  * modify the code in this class.
  *
- * \sa VideoFileWriter
- * \sa VideoFileReader
+ * \sa VideoStream
  *
  * \ingroup Video-Grabber-Base
  */
@@ -116,8 +116,13 @@ public:
   /** Stop active device */
   virtual bool StopGrabbing() = 0;
 
-  /** Return whether or not we can read from a given grabber */
+  /** Return whether or not we can read from a given connected grabbing device */
   virtual bool CanReadGrabber( unsigned long grabberID ) = 0;
+
+  /** Get acquisition parameters from the current (or default) grabbing device */
+  virtual void ReadImageInformation() = 0;
+
+  virtual bool SetNextFrameToRead(unsigned long frameNumber) = 0;
 
   /** Virtual accessor functions to be implemented in each derived class */
   virtual double GetPositionInMSec() = 0;
@@ -126,6 +131,10 @@ public:
   virtual double GetFpS() = 0;
   virtual unsigned long GetCurrentFrame() = 0;
   virtual unsigned long GetLastIFrame() = 0;
+
+  /** Get/Set the camera index */
+  virtual void SetCameraIndex(int idx) = 0;
+  virtual int GetCameraIndex() = 0;
 
   /** Set/Get the number of independent variables (dimensions) in the
      * image being read or written. Note this is not necessarily what
@@ -190,6 +199,11 @@ public:
    * component size of 1 byte. This method can be invoked only after
    * the component type is set. */
   virtual unsigned int GetComponentSize() const;
+
+  /** Set/Get the component type of the image. This is always a native
+     * type. */
+  itkSetEnumMacro(ComponentType, VideoComponentType);
+  itkGetEnumMacro(ComponentType, VideoComponentType);
 
 protected:
   VideoGrabberInterfaceBase(){};

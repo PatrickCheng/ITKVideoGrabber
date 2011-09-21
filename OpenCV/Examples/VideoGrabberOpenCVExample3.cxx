@@ -30,6 +30,20 @@ typedef itk::Image<RGBPixelType, 2>               RGBFrameType;
 typedef itk::VideoStream<RGBFrameType>            RGBVideoStreamType;
 typedef itk::VideoGrabber<RGBVideoStreamType >    VideoGrabberType;
 
+/** Set up a spatial region with the given dimensions */
+RGBFrameType::RegionType SetUpSpatialRegion(unsigned int x, unsigned int y)
+{
+  RGBFrameType::RegionType out;
+  RGBFrameType::RegionType::SizeType size;
+  RGBFrameType::RegionType::IndexType start;
+  size[0] = x;
+  size[1] = y;
+  start.Fill( 0 );
+  out.SetSize( size );
+  out.SetIndex( start );
+  return out;
+}
+
 /*
  * This example performs basic video grabbing from the default device
  * (first available camera interface) using itkOpenCVVideoGrabberInterface
@@ -53,12 +67,12 @@ int main ( int argc, char **argv )
     videoStream->InitializeEmptyFrames();
 
     // Set the buffered spatial region for each frame
-     FrameType::RegionType largestSpatialRegion = SetUpSpatialRegion(100, 100);
-     FrameType::RegionType requestedSpatialRegion = SetUpSpatialRegion(40, 40);
-     FrameType::RegionType bufferedSpatialRegion = SetUpSpatialRegion(50, 40);
-     videoStream->SetAllLargestPossibleSpatialRegions( largestSpatialRegion );
-     videoStream->SetAllRequestedSpatialRegions( requestedSpatialRegion );
-     videoStream->SetAllBufferedSpatialRegions( bufferedSpatialRegion );
+    RGBFrameType::RegionType largestSpatialRegion = SetUpSpatialRegion(100, 100);
+    RGBFrameType::RegionType requestedSpatialRegion = SetUpSpatialRegion(40, 40);
+    RGBFrameType::RegionType bufferedSpatialRegion = SetUpSpatialRegion(50, 40);
+    videoStream->SetAllLargestPossibleSpatialRegions( largestSpatialRegion );
+    videoStream->SetAllRequestedSpatialRegions( requestedSpatialRegion );
+    videoStream->SetAllBufferedSpatialRegions( bufferedSpatialRegion );
 
     VideoGrabberType::Pointer grabber = VideoGrabberType::New();
   // itk::ObjectFactoryBase::RegisterFactory( itk::OpenCVVideoGrabberInterfaceFactory::New() );

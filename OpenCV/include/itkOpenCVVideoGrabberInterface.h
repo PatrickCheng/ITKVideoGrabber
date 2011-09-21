@@ -73,8 +73,10 @@ public:
   /** Return whether or not we can read from a given grabber */
   virtual bool CanReadGrabber( unsigned long grabberID );
 
-  /** Reads image information from the grabbing device. */
-  virtual void ReadImageInformation();
+  /** Reads image information from the default/active grabbing device */
+  virtual void ReadImageInformation( );
+
+  virtual bool SetNextFrameToRead(unsigned long frameNumber);
 
   /** Accessor functions for video specific information */
   virtual double GetPositionInMSec();
