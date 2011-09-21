@@ -22,11 +22,11 @@
 #include "itkMutexLock.h"
 #include "itkMutexLockHolder.h"
 
-#ifdef ITK_VIDEO_USE_OPENCV
+#ifdef VIDEO_GRABBER_USE_OpenCV
 #include "itkOpenCVVideoGrabberInterfaceFactory.h"
 #endif
 
-#ifdef ITK_VIDEO_USE_EPIPHAN
+#ifdef VIDEO_GRABBER_USE_Epiphan
 #include "itkEpiphanGrabberInterfaceFactory.h"
 #endif
 
@@ -83,14 +83,13 @@ void VideoGrabberInterfaceFactory::RegisterBuiltInFactories()
     MutexLockHolder< SimpleMutexLock > mutexHolder(mutex);
     if ( firstTime )
       {
-#ifdef ITK_VIDEO_USE_OPENCV
+#ifdef VIDEO_GRABBER_USE_OpenCV
       ObjectFactoryBase::RegisterFactory( OpenCVVideoGrabberInterfaceFactory::New() );
 #endif
 
-#ifdef ITK_VIDEO_USE_Epiphan
+#ifdef VIDEO_GRABBER_USE_Epiphan
       ObjectFactoryBase::RegisterFactory( EpiphanVideoGrabberInterfaceFactory::New() );
 #endif
-      
       firstTime = false;
       }
     }

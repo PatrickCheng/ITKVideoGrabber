@@ -44,49 +44,6 @@ namespace itk
 class ITK_EXPORT VideoGrabberInterfaceBase: public LightProcessObject
 {
 public:
-/*
-  // enums
-  enum VideoMode
-  {
-     e320x240,
-     e640x480,
-     e800x600,
-     e768x576,
-     e1024x768,
-     e1280x960,
-     e1600x1200,
-     eNone
-  };
-
-  enum ColorMode
-  {
-     eRGB24,
-     eBayerPatternToRGB24,
-     eGrayScale,
-     eYUV411ToRGB24
-  };
-
-  enum FrameRate
-  {
-     e60fps,
-     e30fps,
-     e15fps,
-     e7_5fps,
-     e3_75fps,
-     e1_875fps
-  };
-*/
-  /** Enums used to manipulate the pixel type. The pixel type provides
-    * context for automatic data conversions (for instance, RGB to
-    * SCALAR, VECTOR to SCALAR). */
- //  typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
-
-  /** Enums used to manipulate the component type. The component type
-   * refers to the actual storage class associated with either a
-   * SCALAR pixel type or elements of a compound pixel.
-   */
- //  typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
- //                 ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
 
 public:
 

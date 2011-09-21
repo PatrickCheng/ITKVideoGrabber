@@ -17,6 +17,8 @@
 #ifndef __itkVideoGrabberInterfaceFactory_h
 #define __itkVideoGrabberInterfaceFactory_h
 
+#define VIDEO_GRABBER_USE_OpenCV
+
 #include "itkObjectFactoryBase.h"
 #include "itkVideoGrabberInterfaceBase.h"
 
