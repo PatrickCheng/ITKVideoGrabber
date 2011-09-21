@@ -20,7 +20,7 @@
 #define __itkVideoGrabber_h
 
 #include "itkVideoSource.h"
-#include "itkVideoGrabberInterfaceFactory.h"
+#include "itkVideoGrabberInterfaceBase.h"
 #include "itkDefaultConvertPixelTraits.h"
 
 namespace itk
@@ -38,21 +38,22 @@ namespace itk
  *
  * \ingroup Video-Grabber
  */
-template< class TVideoStream >
-class ITK_EXPORT VideoGrabber : public VideoSource< TVideoStream >
+template< class TOutputVideoStream >
+class ITK_EXPORT VideoGrabber : public VideoSource< TOutputVideoStream >
 {
 public:
 
   typedef VideoGrabber                      Self;
-  typedef VideoSource< TVideoStream > Superclass;
+  typedef VideoSource< TOutputVideoStream > Superclass;
   typedef SmartPointer<Self>                Pointer;
-  typedef TVideoStream                VideoStreamType;
+  typedef TOutputVideoStream                VideoStreamType;
 
-  typedef typename VideoStreamType::FrameType FrameType;
-  typedef typename FrameType::PixelType       PixelType;
+  typedef typename TOutputVideoStream::FrameType OutputFrameType;
+  typedef typename OutputFrameType::RegionType   OutputFrameSpatialRegionType;
+  typedef typename OutputFrameType::PixelType    OutputFramePixelType;
 
   /** Pixel conversion typedefs */
-  typedef DefaultConvertPixelTraits<PixelType> ConvertPixelTraits;
+  typedef DefaultConvertPixelTraits<OutputFramePixelType> ConvertPixelTraits;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);

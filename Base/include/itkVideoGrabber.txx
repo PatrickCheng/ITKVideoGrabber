@@ -20,6 +20,7 @@
 #define __itkVideoGrabber_txx
 
 #include "itkConvertPixelBuffer.h"
+#include "itkVideoGrabberInterfaceFactory.h"
 
 namespace itk
 {
@@ -88,7 +89,7 @@ VideoGrabber< TOutputVideoStream >
   //
   // Check that the desired dimension matches that exposed by the frame grabber
   //
-  if (m_VideoGrabberInterface->GetNumberOfDimensions() != FrameType::ImageDimension)
+  if (m_VideoGrabberInterface->GetNumberOfDimensions() != OutputFrameType::ImageDimension)
     {
     itkExceptionMacro("Output dimension doesn't match dimension of read data");
     }
@@ -114,18 +115,18 @@ VideoGrabber< TOutputVideoStream >
   //
 
   // Set up largest possible spatial region
-  typename FrameType::RegionType region;
-  typename FrameType::SizeType size;
-  typename FrameType::IndexType start;
-  typename FrameType::PointType origin;
-  typename FrameType::SpacingType spacing;
-  typename FrameType::DirectionType direction;
-  for (unsigned int i = 0; i < FrameType::ImageDimension; ++i)
+  typename OutputFrameType::RegionType region;
+  typename OutputFrameType::SizeType size;
+  typename OutputFrameType::IndexType start;
+  typename OutputFrameType::PointType origin;
+  typename OutputFrameType::SpacingType spacing;
+  typename OutputFrameType::DirectionType direction;
+  for (unsigned int i = 0; i < OutputFrameType::ImageDimension; ++i)
     {
     size[i] = m_VideoGrabberInterface->GetDimensions(i);
     origin[i] = m_VideoGrabberInterface->GetOrigin(i);
     spacing[i] = m_VideoGrabberInterface->GetSpacing(i);
-    for (unsigned int j = 0; j < FrameType::ImageDimension; ++j)
+    for (unsigned int j = 0; j < OutputFrameType::ImageDimension; ++j)
       {
       direction[j][i] = m_VideoGrabberInterface->GetDirection(i)[j];
       }
@@ -237,10 +238,10 @@ VideoGrabber< TOutputVideoStream >
   // Make sure the input video (as exposed by the video grabber interface)
   // has the same number of dimensions as the desired output
   //
-  if (m_VideoGrabberInterface->GetNumberOfDimensions() != FrameType::ImageDimension)
+  if (m_VideoGrabberInterface->GetNumberOfDimensions() != OutputFrameType::ImageDimension)
   	{
 	itkExceptionMacro("Cannot convert " << m_VideoGrabberInterface->GetNumberOfDimensions() << "D "
-	  "image set to " << FrameType::ImageDimension << "D");
+	  "image set to " << OutputFrameType::ImageDimension << "D");
 	}
 
   // See if a buffer conversion is needed
@@ -303,7 +304,7 @@ VideoGrabber< TOutputVideoStream >
   }
   else
   {
-    FrameType* frame = this->GetOutput()->GetFrame(frameNum);
+    OutputFrameType* frame = this->GetOutput()->GetFrame(frameNum);
     m_VideoGrabberInterface->GrabSingleFrame(reinterpret_cast<void*>(frame->GetBufferPointer()));
   }
 
@@ -320,7 +321,7 @@ void
 VideoGrabber< TOutputVideoStream >::
 DoConvertBuffer(void* inputData, unsigned long frameNumber)
 {
-  PixelType* outputData =
+  OutputFramePixelType* outputData =
     this->GetOutput()->GetFrame(frameNumber)->GetPixelContainer()->GetBufferPointer();
   unsigned int numberOfPixels =
     this->GetOutput()->GetFrame(frameNumber)->GetPixelContainer()->Size();
@@ -333,7 +334,7 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
     if (isVectorImage)                                                  \
       {                                                                 \
       ConvertPixelBuffer<type,                                          \
-                         PixelType,                                     \
+                         OutputFramePixelType,                          \
                          ConvertPixelTraits                             \
                          >                                              \
         ::ConvertVectorImage(static_cast< type * >( inputData ),        \
@@ -344,7 +345,7 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
     else                                                                \
       {                                                                 \
       ConvertPixelBuffer<type,                                          \
-                         PixelType,                                     \
+                         OutputFramePixelType,                          \
                          ConvertPixelTraits                             \
                          >                                              \
         ::Convert(static_cast< type * >( inputData ),                   \
