@@ -234,11 +234,9 @@ VideoGrabber< TOutputVideoStream >
   m_VideoGrabberInterface->SetCameraIndex(0);
   m_VideoGrabberInterface->ReadImageInformation();
 
-  // Make sure the input video has the same number of dimensions as the desired
-  // output
+  // Make sure the input video (as exposed by the video grabber interface)
+  // has the same number of dimensions as the desired output
   //
-  // Note: This may be changed with the implementation of the Image
-  //       Interpretation Layer
   if (m_VideoGrabberInterface->GetNumberOfDimensions() != FrameType::ImageDimension)
   	{
 	itkExceptionMacro("Cannot convert " << m_VideoGrabberInterface->GetNumberOfDimensions() << "D "
@@ -246,7 +244,7 @@ VideoGrabber< TOutputVideoStream >
 	}
 
   // See if a buffer conversion is needed
-  VideoGrabberInterfaceBase::IOComponentType ioType = VideoGrabberInterface
+  VideoGrabberInterfaceBase::VideoComponentType ioType = VideoGrabberInterfaceBase
     ::MapPixelType< ITK_TYPENAME ConvertPixelTraits::ComponentType >::CType;
   if ( m_VideoGrabberInterface->GetComponentType() != ioType ||
        m_VideoGrabberInterface->GetNumberOfComponents() != ConvertPixelTraits::GetNumberOfComponents() )
@@ -285,15 +283,15 @@ VideoGrabber< TOutputVideoStream >
   unsigned long frameNum = this->GetOutput()->GetRequestedTemporalRegion().GetFrameStart();
 
   // Figure out if we need to skip frames
-  unsigned long currentIOFrame = m_VideoGrabberInterface->GetCurrentFrame();
-  if (frameNum != currentIOFrame)
-    {
+  unsigned long currentFrame = m_VideoGrabberInterface->GetCurrentFrame();
+  if (frameNum != currentFrame)
+  {
     m_VideoGrabberInterface->SetNextFrameToRead(frameNum);
-    }
+  }
 
   // Read a single frame
   if (m_PixelConversionNeeded)
-    {
+  {
     // Set up temporary buffer for reading
     size_t bufferSize = m_VideoGrabberInterface->GetImageSizeInBytes();
     char* loadBuffer = new char[bufferSize];
@@ -303,12 +301,12 @@ VideoGrabber< TOutputVideoStream >
 
     // Convert the buffer into the output buffer location
     this->DoConvertBuffer(static_cast<void*>(loadBuffer), frameNum);
-    }
+  }
   else
-    {
+  {
     FrameType* frame = this->GetOutput()->GetFrame(frameNum);
     m_VideoGrabberInterface->GrabSingleFrame(reinterpret_cast<void*>(frame->GetBufferPointer()));
-    }
+  }
 
   // Mark ourselves modified
   this->Modified();
@@ -340,7 +338,7 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
                          ConvertPixelTraits                             \
                          >                                              \
         ::ConvertVectorImage(static_cast< type * >( inputData ),        \
-                             m_VideoGrabber->GetNumberOfComponents(),   \
+                             m_VideoGrabberInterface->GetNumberOfComponents(),   \
                              outputData,                                \
                              numberOfPixels);                           \
       }                                                                 \
@@ -351,34 +349,34 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
                          ConvertPixelTraits                             \
                          >                                              \
         ::Convert(static_cast< type * >( inputData ),                   \
-                  m_VideoGrabber->GetNumberOfComponents(),              \
+                  m_VideoGrabberInterface->GetNumberOfComponents(),              \
                   outputData,                                           \
                   numberOfPixels);                                      \
       }                                                                 \
     }
 
   if(0) {}
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::UCHAR,unsigned char)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::CHAR,char)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::USHORT,unsigned short)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::SHORT,short)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::UINT,unsigned int)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::INT,int)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::ULONG,unsigned long)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::LONG,long)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::FLOAT,float)
-  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::DOUBLE,double)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::UCHAR,unsigned char)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::CHAR,char)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::USHORT,unsigned short)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::SHORT,short)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::UINT,unsigned int)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::INT,int)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::ULONG,unsigned long)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::LONG,long)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::FLOAT,float)
+  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::DOUBLE,double)
   else
     {
 #define TYPENAME_VideoGrabber(x)                                     \
     m_VideoGrabberInterface->GetComponentTypeAsString                 \
-      (ImageIOBase::MapPixelType<x>::CType)
+      (VideoGrabberInterfaceBase::MapPixelType<x>::CType)
 
     ExceptionObject e(__FILE__, __LINE__);
     std::ostringstream       msg;
     msg << "Couldn't convert component type: "
         << std::endl << "    "
-        << m_VideoGrabber->GetComponentTypeAsString( m_VideoGrabber->GetComponentType() )
+        << m_VideoGrabberInterface->GetComponentTypeAsString( m_VideoGrabberInterface->GetComponentType() )
         << std::endl << "to one of: "
         << std::endl << "    " << TYPENAME_VideoGrabber( unsigned char )
         << std::endl << "    " << TYPENAME_VideoGrabber( char )

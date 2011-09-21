@@ -190,5 +190,37 @@ unsigned int VideoGrabberInterfaceBase::GetComponentSize() const
   return 0;
 }
 
+std::string VideoGrabberInterfaceBase::GetComponentTypeAsString(VideoComponentType t)
+{
+  std::string s;
+
+  switch ( t )
+    {
+    case UCHAR:
+      return ( s = "unsigned_char" );
+    case CHAR:
+      return ( s = "char" );
+    case USHORT:
+      return ( s = "unsigned_short" );
+    case SHORT:
+      return ( s = "short" );
+    case UINT:
+      return ( s = "unsigned_int" );
+    case INT:
+      return ( s = "int" );
+    case ULONG:
+      return ( s = "unsigned_long" );
+    case LONG:
+      return ( s = "long" );
+    case FLOAT:
+      return ( s = "float" );
+    case DOUBLE:
+      return ( s = "double" );
+    case UNKNOWNCOMPONENTTYPE:
+      return ( s = "unknown" );
+    default:
+      return ( s = "unknown" );
+    }
+}
 
 }; //namespace itk end

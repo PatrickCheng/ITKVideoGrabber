@@ -80,12 +80,12 @@ public:
     * SCALAR, VECTOR to SCALAR). */
    typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
 
-   /** Enums used to manipulate the component type. The component type
-      * refers to the actual storage class associated with either a
-      * SCALAR pixel type or elements of a compound pixel.
-      */
-     typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
-                     ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
+  /** Enums used to manipulate the component type. The component type
+   * refers to the actual storage class associated with either a
+   * SCALAR pixel type or elements of a compound pixel.
+   */
+   typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
+                  ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
 
 public:
 
@@ -200,10 +200,29 @@ public:
    * the component type is set. */
   virtual unsigned int GetComponentSize() const;
 
+   /** Set/Get the number of components per pixel in the image.
+   * For SCALAR pixel types,
+   * NumberOfComponents will be 1.  For other pixel types,
+   * NumberOfComponents will be greater than or equal to one. */
+  itkSetMacro(NumberOfComponents, unsigned int);
+  itkGetConstReferenceMacro(NumberOfComponents, unsigned int);
+
   /** Set/Get the component type of the image. This is always a native
      * type. */
   itkSetEnumMacro(ComponentType, VideoComponentType);
   itkGetEnumMacro(ComponentType, VideoComponentType);
+
+  /** Convenience method returns the VideoComponentType as a string. This can be
+   * used for writing output files. */
+  static std::string GetComponentTypeAsString(VideoComponentType);
+
+  /** Map between C++ Pixel type and ImageIOBase ComponentType */
+  template <typename TPixel>
+    struct MapPixelType
+  {
+    static const VideoComponentType CType =
+      UNKNOWNCOMPONENTTYPE;
+  };
 
 protected:
   VideoGrabberInterfaceBase(){};
