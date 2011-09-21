@@ -1,6 +1,5 @@
 set(Video-Grabber-Base_SRC
 itkVideoGrabberInterfaceBase.cxx
-itkVideoGrabberInterfaceFactory.cxx
 )
 
 add_library(Video-Grabber-Base ${Video-Grabber-Base_SRC})
