@@ -160,7 +160,7 @@ bool OpenCVVideoGrabberInterface::SetNextFrameToRead(unsigned long frameNumber)
 
 void OpenCVVideoGrabberInterface::ReadImageInformation()
 {
-  // Set up a local capture and image
+  // Set up a local cv capture and cv image
   CvCapture* localCapture;
   IplImage* tempImage;
 
@@ -191,15 +191,15 @@ void OpenCVVideoGrabberInterface::ReadImageInformation()
   // Set the pixel type
   if (this->m_NumberOfComponents == 1)
   {
-  this->m_PixelType = SCALAR;
+  this->m_PixelType = ImageIOBase::SCALAR;
   }
   else if (this->m_NumberOfComponents == 3)
   {
-  this->m_PixelType = RGB;
+  this->m_PixelType = ImageIOBase::RGB;
   }
   else if (this->m_NumberOfComponents == 4)
   {
-  this->m_PixelType = RGBA;
+  this->m_PixelType = ImageIOBase::RGBA;
   }
   else
   {
@@ -307,7 +307,7 @@ bool OpenCVVideoGrabberInterface::OpenGrabber(int index)
     // Open the camera capture
     localCapture = cvCaptureFromCAM( this->m_CameraIndex );
 
-    // Make sure it opened right
+    // Make sure it has opened right
     if (!localCapture)
       {
       itkExceptionMacro(<< "Could not open OpenCV video grabber " << this->m_CameraIndex);
@@ -331,22 +331,22 @@ bool OpenCVVideoGrabberInterface::OpenGrabber(int index)
     // Set the pixel type
     if (this->m_NumberOfComponents == 1)
       {
-      this->m_PixelType = SCALAR;
+      this->m_PixelType = ImageIOBase::SCALAR;
       }
     else if (this->m_NumberOfComponents == 3)
       {
-      this->m_PixelType = RGB;
+      this->m_PixelType = ImageIOBase::RGB;
       }
     else if (this->m_NumberOfComponents == 4)
       {
-      this->m_PixelType = RGBA;
+      this->m_PixelType = ImageIOBase::RGBA;
       }
     else
       {
-      itkExceptionMacro("OpenCV video grabber only supports Mono, RGB, and RGBA input");
+      itkExceptionMacro("OpenCV video grabber only supports Mono, RGB, and RGBA inputs");
       }
 
-    // Release the local capture and image
+    // Release the local cv capture and cv image
     cvReleaseCapture(&localCapture);
 
     this->m_Capture = cvCaptureFromCAM( this->m_CameraIndex );
@@ -412,9 +412,9 @@ void OpenCVVideoGrabberInterface::ResetMembers()
 
   this->m_Dimensions.clear();
   this->m_NumberOfComponents = 0;
-  this->m_PixelType = SCALAR;
-  this->m_ComponentType = UCHAR;
-//  this->SetNumberOfDimensions(2);
+  this->m_PixelType = ImageIOBase::SCALAR;
+  this->m_ComponentType = ImageIOBase::UCHAR;
+  this->SetNumberOfDimensions(2);
   this->m_Spacing[0] = 1.0;
   this->m_Spacing[1] = 1.0;
   this->m_Origin[0] = 0.0;

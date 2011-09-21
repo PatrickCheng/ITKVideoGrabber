@@ -244,8 +244,7 @@ VideoGrabber< TOutputVideoStream >
 	}
 
   // See if a buffer conversion is needed
-  VideoGrabberInterfaceBase::VideoComponentType ioType = VideoGrabberInterfaceBase
-    ::MapPixelType< ITK_TYPENAME ConvertPixelTraits::ComponentType >::CType;
+  ImageIOBase::IOComponentType ioType = ImageIOBase::MapPixelType< ITK_TYPENAME ConvertPixelTraits::ComponentType >::CType;
   if ( m_VideoGrabberInterface->GetComponentType() != ioType ||
        m_VideoGrabberInterface->GetNumberOfComponents() != ConvertPixelTraits::GetNumberOfComponents() )
     {
@@ -356,27 +355,27 @@ DoConvertBuffer(void* inputData, unsigned long frameNumber)
     }
 
   if(0) {}
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::UCHAR,unsigned char)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::CHAR,char)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::USHORT,unsigned short)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::SHORT,short)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::UINT,unsigned int)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::INT,int)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::ULONG,unsigned long)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::LONG,long)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::FLOAT,float)
-  ITK_CONVERT_BUFFER_IF_BLOCK(VideoGrabberInterfaceBase::DOUBLE,double)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::UCHAR,unsigned char)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::CHAR,char)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::USHORT,unsigned short)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::SHORT,short)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::UINT,unsigned int)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::INT,int)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::ULONG,unsigned long)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::LONG,long)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::FLOAT,float)
+  ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::DOUBLE,double)
   else
     {
 #define TYPENAME_VideoGrabber(x)                                     \
-    m_VideoGrabberInterface->GetComponentTypeAsString                 \
-      (VideoGrabberInterfaceBase::MapPixelType<x>::CType)
+    ImageIOBase::GetComponentTypeAsString                 \
+      (ImageIOBase::MapPixelType<x>::CType)
 
     ExceptionObject e(__FILE__, __LINE__);
     std::ostringstream       msg;
     msg << "Couldn't convert component type: "
         << std::endl << "    "
-        << m_VideoGrabberInterface->GetComponentTypeAsString( m_VideoGrabberInterface->GetComponentType() )
+        << ImageIOBase::GetComponentTypeAsString( m_VideoGrabberInterface->GetComponentType() )
         << std::endl << "to one of: "
         << std::endl << "    " << TYPENAME_VideoGrabber( unsigned char )
         << std::endl << "    " << TYPENAME_VideoGrabber( char )

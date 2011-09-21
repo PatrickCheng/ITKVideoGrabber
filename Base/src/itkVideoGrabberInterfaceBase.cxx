@@ -162,65 +162,32 @@ unsigned int VideoGrabberInterfaceBase::GetComponentSize() const
 {
   switch ( m_ComponentType )
     {
-    case UCHAR:
+    case ImageIOBase::UCHAR:
       return sizeof( unsigned char );
-    case CHAR:
+    case ImageIOBase::CHAR:
       return sizeof( char );
-    case USHORT:
+    case ImageIOBase::USHORT:
       return sizeof( unsigned short );
-    case SHORT:
+    case ImageIOBase::SHORT:
       return sizeof( short );
-    case UINT:
+    case ImageIOBase::UINT:
       return sizeof( unsigned int );
-    case INT:
+    case ImageIOBase::INT:
       return sizeof( int );
-    case ULONG:
+    case ImageIOBase::ULONG:
       return sizeof( unsigned long );
-    case LONG:
+    case ImageIOBase::LONG:
       return sizeof( long );
-    case FLOAT:
+    case ImageIOBase::FLOAT:
       return sizeof( float );
-    case DOUBLE:
+    case ImageIOBase::DOUBLE:
       return sizeof( double );
-    case UNKNOWNCOMPONENTTYPE:
+    case ImageIOBase::UNKNOWNCOMPONENTTYPE:
     default:
       itkExceptionMacro ("Unknown component type: " << m_ComponentType);
     }
 
   return 0;
-}
-
-std::string VideoGrabberInterfaceBase::GetComponentTypeAsString(VideoComponentType t)
-{
-  std::string s;
-
-  switch ( t )
-    {
-    case UCHAR:
-      return ( s = "unsigned_char" );
-    case CHAR:
-      return ( s = "char" );
-    case USHORT:
-      return ( s = "unsigned_short" );
-    case SHORT:
-      return ( s = "short" );
-    case UINT:
-      return ( s = "unsigned_int" );
-    case INT:
-      return ( s = "int" );
-    case ULONG:
-      return ( s = "unsigned_long" );
-    case LONG:
-      return ( s = "long" );
-    case FLOAT:
-      return ( s = "float" );
-    case DOUBLE:
-      return ( s = "double" );
-    case UNKNOWNCOMPONENTTYPE:
-      return ( s = "unknown" );
-    default:
-      return ( s = "unknown" );
-    }
 }
 
 }; //namespace itk end

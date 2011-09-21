@@ -19,6 +19,7 @@
 #define __itkVideoGrabberInterfaceBase_h
 
 #include "itkLightProcessObject.h"
+#include "itkImageIOBase.h"
 #include "itkExceptionObject.h"
 #include "vnl/vnl_vector.h"
 
@@ -33,7 +34,7 @@ namespace itk
  * grabber interface classes
  *
  * A pluggable factory pattern is used. This allows different kinds of
- * frame grabbers to be registered (even at run time) without having to
+ * frame grabber interfaces to be registered (even at run time) without having to
  * modify the code in this class.
  *
  * \sa VideoStream
@@ -43,7 +44,7 @@ namespace itk
 class ITK_EXPORT VideoGrabberInterfaceBase: public LightProcessObject
 {
 public:
-
+/*
   // enums
   enum VideoMode
   {
@@ -74,18 +75,18 @@ public:
      e3_75fps,
      e1_875fps
   };
-
+*/
   /** Enums used to manipulate the pixel type. The pixel type provides
     * context for automatic data conversions (for instance, RGB to
     * SCALAR, VECTOR to SCALAR). */
-   typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
+ //  typedef  enum { UNKNOWNPIXELTYPE, SCALAR, RGB, RGBA }  VideoFramePixelType;
 
   /** Enums used to manipulate the component type. The component type
    * refers to the actual storage class associated with either a
    * SCALAR pixel type or elements of a compound pixel.
    */
-   typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
-                  ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
+ //  typedef  enum { UNKNOWNCOMPONENTTYPE, UCHAR, CHAR, USHORT, SHORT, UINT, INT,
+ //                 ULONG, LONG, FLOAT, DOUBLE } VideoComponentType;
 
 public:
 
@@ -209,20 +210,12 @@ public:
 
   /** Set/Get the component type of the image. This is always a native
      * type. */
-  itkSetEnumMacro(ComponentType, VideoComponentType);
-  itkGetEnumMacro(ComponentType, VideoComponentType);
+  itkSetEnumMacro(ComponentType, ImageIOBase::IOComponentType);
+  itkGetEnumMacro(ComponentType, ImageIOBase::IOComponentType);
 
   /** Convenience method returns the VideoComponentType as a string. This can be
    * used for writing output files. */
-  static std::string GetComponentTypeAsString(VideoComponentType);
-
-  /** Map between C++ Pixel type and ImageIOBase ComponentType */
-  template <typename TPixel>
-    struct MapPixelType
-  {
-    static const VideoComponentType CType =
-      UNKNOWNCOMPONENTTYPE;
-  };
+//  static std::string GetComponentTypeAsString(ImageIOBase::IOComponentType);
 
 protected:
   VideoGrabberInterfaceBase(){};
@@ -239,7 +232,7 @@ protected:
   double          m_Ratio;
   double          m_PositionInMSec;
   bool            m_GrabberIsOpen;
-  VideoComponentType m_ComponentType;
+  ImageIOBase::IOComponentType m_ComponentType;
 
   /** device index for reading from a camera (may move to base class) */
   int m_CameraIndex;
@@ -264,8 +257,8 @@ protected:
    /** The number of independent dimensions in the image. */
    unsigned int m_NumberOfDimensions;
 
-   /** Used internally to keep track of the type of the pixel. */
-   VideoFramePixelType m_PixelType;  
+   /** Used internally to keep track of the pixel type. */
+   ImageIOBase::IOPixelType m_PixelType;  
 
 private:
   VideoGrabberInterfaceBase(const Self &);    //purposely not implemented
